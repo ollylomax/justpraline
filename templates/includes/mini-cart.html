@@ -1,0 +1,66 @@
+<div class="cart" role="alert" aria-live="assertive" aria-atomic="true">
+    <!-- Conditional to check if grand total exists (cart has products) -->
+    {% if grand_total %}
+    <div class="text-center" style="background-color: black;">
+        <i class="fa-solid fa-angle-down text-white align-top"></i>
+    </div>
+    <div class="cart-inner">
+        <p class="text-white py-1"><strong>Cart</strong> ({{ product_count }} boxes)</p>
+        <div>
+            <!-- Iterate over caer items -->
+            {% for item in cart_items %}
+            <!-- If product has a current image -->
+            {% if item.product.image %}
+            <div class="row">
+                <div class="col-3 my-1">
+                    <!-- Product image served from media directory -->
+                    <img width='48' height='48' class="border border-secondary"
+                        src="{{ MEDIA_URL }}{{ item.product.image }} " alt="{{ MEDIA_URL }}{{ item.product }}">
+                </div>
+                <!-- If product has no image -->
+                {% else %}
+                <div class="row">
+                    <div class="col-3 my-1">
+                        <!-- Placeholder image served from media directory -->
+                        <img width='48' height='48' class="border border-secondary"
+                            src="{{ MEDIA_URL }}placeholder.jpg" alt="No image available">
+                    </div>
+                    {% endif %}
+                    <div class="col-9">
+                        <p class="my-0 text-white"><strong>{{ item.product.name }}</strong></p>
+                        <p class="my-0 small text-white">Qty: {{ item.quantity }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col">
+                        <p class="mt-3 mb-1 text-white">
+                            <!-- Add delivery disclaimer if free delivery threshold not met -->
+                            Total{% if delivery_dearth > 0 %} (Exc. delivery){% endif %}:
+                            <!-- Round to two decimal places -->
+                            <span class="float-right"><strong>£{{ total|floatformat:2 }}</strong></span>
+                        </p>
+                    <p class="text-white">
+                        <!-- Conditional to check if free delivery threshold is met -->
+                        {% if delivery_dearth %}
+                        Spend <strong>£{{ delivery_dearth }}</strong> more to get free delivery!
+                        {% endif %}
+                    </p>
+                    <!-- Buttons block -->
+                    <div class="float-end">
+                        <!-- Close button with id targeted by custom script -->
+                        <button id="close" class="btn btn-white mt-2">Close</button>
+                        <!-- View Cart button directing to cart view -->
+                        <a href="{% url 'cart' %}" class="btn mt-2">
+                            <span class="icon">
+                                <i class="fa-solid fa-cart-flatbed"></i>
+                            </span>
+                            <span>View Cart</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>

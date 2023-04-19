@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Contact{% endblock %}
+
+<!-- Page header -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Main content block -->
+{% block content %}
+<!-- Background image overlay -->
+<div class="overlay"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-10 col-offset-1">
+            <!-- Page title -->
+            <hr>
+            <h2>Contact Us</h2>
+            <hr>
+            <!-- Form block -->
+            <form method="post">
+                <!-- Django csrf token -->
+                {% csrf_token %}
+                <!-- From rendered from models as crispy form -->
+                {{ form|crispy }}
+                <div class="form-actions">
+                    <!-- Send button which submits the form -->
+                    <button type="submit" class="btn float-end mt-2">Send</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

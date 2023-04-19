@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Load cart utilities from template tags -->
+{% load cart_utils %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Cart{% endblock %}
+
+<!-- Page header -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Main content block -->
+{% block content %}
+<!-- Background image overlay -->
+<div class="overlay"></div>
+<div class="container mb-2">
+    <!-- Page title -->
+    <div class="row justify-content-center">
+        <div class="col-10 col-offset-1">
+            <hr>
+            <h2>Your Cart</h2>
+            <hr>
+        </div>
+    </div>
+    <!-- Cart block -->
+    <div class="justify-content-center row bg-light mx-3 py-3 rounded border border-dark">
+        <div class="col-10 col-offset-1">
+            <!-- Conditional to check for cart items in session -->
+            {% if cart_items %}
+            <div class="table-responsive rounded">
+                <!-- Table content -->
+                <table class="table table-sm table-borderless">
+                    <thead class="text-black">
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Product Info</th>
+                            <th scope="col">Per Unit Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                    </thead>
+                    <!-- Iterate through items in cart session -->
+                    {% for item in cart_items %}
+                    <tr>
+                        <!-- If item has a product image uploaded -->
+                        {% if item.product.image %}
+                        <td class="w-25" style="margin: 0 auto;">
+                            <!-- Product image served from media directory -->
+                            <img class="img-fluid rounded" src="{{ MEDIA_URL }}{{ item.product.image }}" alt="{{ MEDIA_URL }}{{ item.service.image }}">
+                        </td>
+                        <!-- If item has no image -->
+                        {% else %}
+                        <td class="w-25" style="margin: 0 auto;">
+                            <!-- Placeholder image served from media directory -->
+                            <img class="img-fluid rounded" src="{{ MEDIA_URL }}placeholder.jpg" alt="{{ MEDIA_URL }}placeholder.jpg">
+                        </td>
+                        {% endif %}
+                        <td class="">
+                            <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                            <p class="my-0">{{ item.product.type }}</p>
+                            <p class="my-0 small text-muted">SKU: {{ item.product.sku|upper }}</p>
+                        </td>
+                        <td class="">
+                            <p class="my-0">£{{ item.product.price }}</p>
+                        </td>
+                        <td class="">
+                            <!-- Form with POST passing item id to the quantity amend view -->
+                            <form class="form update-form" method="POST"
+                                action="{% url 'quantity_amend' item.item_id %}">
+                                {% csrf_token %}
+                                <!-- Quantity increment and decrement group -->
+                                <div class="form-group">
+                                    <div class="input-group justify-content-center">
+                                        <div class="input-group-prepend">
+                                            <!-- Button to decrement quantity in steps of 10 -->
+                                            <button class="decrement-qty btn btn-sm" data-item_id="{{ item.item_id }}"
+                                                id="decrement-qty_{{ item.item_id }}">
+                                                <span>
+                                                    <i class="fas fa-minus fa-sm"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                        <!-- Read only quantity input field with +/- steps of 10 and max input of 100000 -->
+                                        <input class="form-control form-control-sm qty_input text-center"
+                                            style="max-width: 95px;" type="number" name="quantity"
+                                            value="{{ item.quantity }}" min="10" max="100000" readonly
+                                            data-item_id="{{ item.item_id }}" id="id_qty_{{ item.item_id }}">
+                                        <div class="input-group-append">
+                                            <!-- Button to increment quantity in steps of 10 -->
+                                            <button class="increment-qty btn btn-sm" data-item_id="{{ item.item_id }}"
+                                                id="increment-qty_{{ item.item_id }}">
+                                                <span>
+                                                    <i class="fas fa-plus fa-sm"></i>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- Update button with class used by custom script to update quantity in cart -->
+                            <a class="update-link btn mt-2"><small>Update</small></a>
+                            <!-- Remove button with class used by custom script to remove product from cart -->
+                            <a class="remove-item btn mt-2" id="remove_{{ item.item_id }}"><small>Remove</small></a>
+                        </td>
+                        <td class="py-3">
+                            <!-- Paragraph with result of price and quantity being passed to cart utils template tag -->
+                            <p class="my-0">£{{ item.product.price | calculate_sub:item.quantity }}</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                <!-- Cart totals content -->
+                <div class="float-end">
+                    <div class="text-end">
+                        <!-- Rounding to two decimal places -->
+                        <h6><strong>Cart Total: £{{ total|floatformat:2 }}</strong></h6>
+                        <!-- Rounding to two decimal places -->
+                        <h6>Delivery: £{{ delivery|floatformat:2 }}</h6>
+                        <!-- Rounding to two decimal places -->
+                        <h4 class="mt-4"><strong>Amount Due: £{{ grand_total|floatformat:2 }}</strong></h4>
+                        <!-- Check if free delivery requirements are matched -->
+                        {% if delivery_dearth > 0 %}
+                        <p class="mb-1">
+                            Spend just <strong>£{{ delivery_dearth }}</strong> more to receive FREE DELIVERY!
+                        </p>
+                        {% endif %}
+                    </div>
+                    <div class="float-end">
+                    <!-- Back to Products button directing to products view -->
+                    <a href="{% url 'products' %}" class="btn mt-2">
+                        <span class="icon">
+                            <i class="fas fa-chevron-left"></i>
+                        </span>
+                        <span>All Pralines</span>
+                    </a>
+                    <!-- Checkout Now button directing to checkout view -->
+                    <a href="{% url 'checkout' %}" class="btn mt-2">
+                        <span>Checkout Now</span>
+                        <span class="icon">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                    </a>
+                </div>
+                </div>
+            </div>
+            <!-- If no products in cart -->
+            {% else %}
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-2">Nothing currently in your cart.</p>
+                    <!-- Button directing to products view -->
+                    <a href="{% url 'products' %}" class="btn mt-2">
+                        <span class="icon mr-2">
+                            <i class="fa-solid fa-arrow-rotate-left"></i>
+                        </span>
+                        <span>Back to Products</span>
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Custom javascript injection -->
+{% block postjs %}
+<!-- Add don't overwrite -->
+{{ block.super }}
+<!-- Include quantity increment/decrement script from products includes folder -->
+{% include 'products/includes/quantity_incdec.html' %}
+
+<!-- Custom javascript -->
+<script>
+    // Update quantity on click
+    $('.update-link').click(function (e) {
+        var form = $(this).prev('.update-form');
+        form.submit();
+    })
+
+    // Remove item and reload on click
+    $('.remove-item').click(function (e) {
+        var csrfToken = "{{ csrf_token }}";
+        var itemId = $(this).attr('id').split('remove_')[1];
+        var url = `/cart/delete/${itemId}/`;
+        var data = {
+            'csrfmiddlewaretoken': csrfToken
+        };
+
+        $.post(url, data)
+            .done(function () {
+                location.reload();
+            });
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+<!-- Load base files -->
+{% load static %}
+<!-- Add corresponding suffix to page title -->
+{% block title_suffix %}- ERROR 404{% endblock %}
+
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="overlay"></div>
+<div class="container">
+    <div class="col-12 text-center">
+        <!-- Venture Press Logo -->
+        <hr>
+        <img src="{{ MEDIA_URL }}jp.png" alt="Just Praline Logo">
+        <h2 class="mt-1">ERROR 404</h2>
+        <hr>
+        <h3>Woops!</h3>
+        <p>Click below to get back to go back to the Home Page.</p>
+        <!-- Anchor directing to home page -->
+        <a href="{% url 'home' %}" class="btn mt-2">
+            <span class="icon mr-2">
+                <i class="fa-solid fa-arrow-rotate-left"></i>
+            </span>
+            <span>Back to Home Page</span>
+        </a>
+    </div>
+</div>
+
+{% endblock %}

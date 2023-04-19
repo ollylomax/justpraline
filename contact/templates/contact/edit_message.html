@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Edit Message{% endblock %}
+
+<!-- Page header -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Main content block -->
+{% block content %}
+<!-- Background image overlay -->
+<div class="overlay"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-10 col-offset-1">
+            <!-- Page title -->
+            <h2>Edit Message</h2>
+            <p class="text-center">Editing <strong>{{ message.subject }}</strong> message number
+                <strong>{{ message.id }}</strong> on
+                {{ message.date }}</p>
+            <!-- Form with POST passing message id to edit message view -->
+            <form method="POST" action="{% url 'edit_message' message.id %}" class="form mb-2">
+                <!-- Django csrf token -->
+                {% csrf_token %}
+                <!-- Form rendered from models as crispy form -->
+                {{ form|crispy }}
+                <div class="float-end">
+                    <!-- Back to Messages button directing to message centre view -->
+                    <a class="btn mt-2" href="{% url 'message_centre' %}">Back to Messages</a>
+                    <!-- Confirm Edit button which submits form -->
+                    <button class="btn mt-2" type="submit">Confirm Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

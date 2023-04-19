@@ -1,0 +1,11 @@
+Hi {{ form.first_name.value }},
+
+Thank you for your contact request. We endeavour to respond within 2 working days.
+
+Your message is shown below.
+
+{{ form.message.value }}
+
+Kind regards
+
+Venture Press Team

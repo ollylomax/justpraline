@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Profile{% endblock %}
+
+<!-- Inject profile css into this template -->
+{% block add_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
+<!-- Page header -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Main content block -->
+{% block content %}
+<!-- Background image overlay -->
+<div class="overlay"></div>
+<div class="container">
+    <!-- Page title -->
+    <div class="row justify-content-center">
+        <div class="col-10 col-offset-1">
+            <hr>
+            <h2>My Profile</h2>
+            <hr>
+        </div>
+    </div>
+    <!-- Profile block -->
+    <div class="row justify-content-center text-center">
+        <div class="col-8 col-offset-2">
+            <!-- Personal Info content -->
+            <div class="text-center">
+                <h3>Personal Information</h3>
+                <hr>
+                <table>
+                    <tr>
+                        <th>First Name</th>
+                    </tr>
+                    <tr class="border-0">
+                        <td>{{ profile.first_name }}</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <th>Last Name</th>
+                    </tr>
+                    <tr class="border-0">
+                        <td>{{ profile.last_name }}</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <th>Phone Number</th>
+                    </tr>
+                    <tr class="border-0">
+                        <td>{{ profile.default_phone_number }}</td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <!-- Address info content -->
+            <div>
+                <h3>Delivery Information</h3>
+                <hr>
+                <table>
+                    <tr>
+                        <th>Address Line 1</th>
+                    </tr>
+                    <tr class="border-0">
+                        <td>{{ profile.default_address_line1 }}</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <th>Address Line 2</th>
+                    </tr>
+                    <tr class="border-0">
+                        <td>{{ profile.default_address_line2 }}</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <th>City</th>
+                    </tr>
+                    <tr class="border-0">
+                        <td>{{ profile.default_city }}</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <th>County</th>
+                    </tr>
+                    <tr class="border-0">
+                        <td>{{ profile.default_county }}</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <th>Post Code</th>
+                    </tr>
+                    <tr class="border-0">
+                        <td>{{ profile.default_postcode }}</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <th>Country</th>
+                    </tr>
+                    <tr class="border-0">
+                        <td>{{ profile.default_country.name }}</td>
+                    </tr>
+                </table>
+            </div>
+            <hr>
+            <!-- Buttons block -->
+            <div class="row justify-content-center">
+                <!-- Edit Profile button directing to edit profile view -->
+                <a href="{% url 'edit_profile' %}" class="col-12 col-lg-3 btn m-2">Edit Profile</a>
+                <!-- Change Password button directing to allauth account change password view -->
+                <a href="{% url 'account_change_password' %}" class="col-12 col-lg-3 btn m-2">Change Password</a>
+                <!-- Logout button directing to allauth account logout view -->
+                <a href="{% url 'account_logout' %}" class="col-12 col-lg-3 btn m-2">Log Out</a>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endblock %}

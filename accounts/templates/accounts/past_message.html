@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Message{% endblock %}
+
+<!-- Inject profile css into this template -->
+{% block add_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
+<!-- Page header -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+
+<!-- Main content block -->
+{% block content %}
+<!-- Background image overlay -->
+<div class="overlay"></div>
+<div class="container">
+    <!-- Page title -->
+    <div class="row justify-content-center">
+        <div class="col-10 col-offset-1">
+            <hr>
+            <h2>{{ message.subject }}</h2>
+            <hr>
+        </div>
+    </div>
+    <!-- Message block -->
+    <div class="row justify-content-center text-center">
+        <div class="col-10 col-offset-1">
+            <table>
+                <tr>
+                    <th>Message Number</th>
+                </tr>
+                <tr>
+                    <td>{{ message.id }}</td>
+                </tr>
+            </table>
+            <hr>
+            <table>
+                <tr>
+                    <th>Date Received</th>
+                </tr>
+                <tr>
+                    <td>{{ message.date }}</td>
+                </tr>
+            </table>
+            <hr>
+            <strong>Your Message</strong>
+            <p style="overflow-wrap: break-word;">{{ message.message }}</p>
+
+            <hr>
+            <div class="row justify-content-center">
+                <!-- Edit message button passing message id to view -->
+                <a href="{% url 'edit_message' message.id %}" class="col-§1 col-md-3 btn m-2">Edit Message</a>
+                <!-- Delete message button triggering modal -->
+                <button type="button" class="btn col-12 col-md-3 m-2" data-bs-toggle="modal"
+                    data-bs-target="#modal-{{ message.id }}">
+                    Delete Message
+                </button>
+                <!-- Button directing to messages -->
+                <a href="{% url 'message_centre' %}" class="btn mt-2">
+                    <span class="icon mr-2">
+                        <i class="fa-solid fa-arrow-rotate-left"></i>
+                    </span>
+                    <span>Back to Message Centre</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal-{{ message.id }}" tabindex="-1" aria-labelledby="modal-{{ message.id }}"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to delete your Message?</h5>
+                <!-- Button to close modal dialog -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Your message will be removed and we will not contact you.
+            </div>
+            <div class="modal-footer">
+                <!-- Back button to close modal dialog -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                <!-- Delete button passing message id to view -->
+                <a class="btn btn-danger" role='button' href="{% url 'delete_message' message.id %}">Confirm
+                    Deletion</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

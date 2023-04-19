@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Load cart utilities from template tags -->
+{% load cart_utils %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Checkout{% endblock %}
+
+<!-- Inject checkout css into this template -->
+{% block add_css %}
+<link rel="stylesheet" href="{% static 'checkout/css/checkout.css' %}">
+{% endblock %}
+
+<!-- Page header -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Main content block -->
+{% block content %}
+<!-- Background image overlay -->
+<div class="overlay"></div>
+<div class="container">
+    <!-- Page title -->
+    <div class="row">
+        <div class="col">
+            <hr>
+            <h2 class="logo-font mb-4">Checkout</h2>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Order Summary block -->
+        <div class="col-12 col-lg-6 order-lg-last mb-5">
+            <p class="text-muted">Order Summary (<strong>{{ product_count }}</strong> impressions)</p>
+            <div class="row">
+                <div class="col-7 offset-2">
+                    <p class="mb-1 mt-0 small text-muted">Item</p>
+                </div>
+                <div class="col-3 text-right">
+                    <p class="mb-1 mt-0 small text-muted">Subtotal</p>
+                </div>
+            </div>
+            <!-- Iterate through cart items -->
+            {% for item in cart_items %}
+            <div class="row">
+                <div class="col-2 mb-1">
+                    <!-- Button passing product id to product detail view -->
+                    <a href="{% url 'product_detail' item.product.id %}">
+                        <!-- If item has a product image uploaded -->
+                        {% if item.product.image %}
+                        <!-- Product image served from media directory -->
+                        <img class="w-100" src="{{ MEDIA_URL }}{{ item.product.image }}" alt="{{ product.name }}">
+                        <!-- If item has no image -->
+                        {% else %}
+                        <!-- Placeholder image served from media directory -->
+                        <img class="w-100" src="{{ MEDIA_URL }}placeholder.jpg" alt="{{ product.name }}">
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="col-7">
+                    <p class="my-0"><strong>{{ item.product.name }}</strong></p>
+                    <p class="my-0 small text-muted">Qty: {{ item.quantity }}</p>
+                </div>
+                <div class="col-3 text-right">
+                    <!-- Paragraph with result of price and quantity being passed to cart utils template tag -->
+                    <p class="my-0 small text-muted">£{{ item.product.price | calculate_sub:item.quantity }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            <hr class="my-0">
+            <div class="row text-black text-right">
+                <div class="col-7 offset-2">
+                    <p class="my-0">Order Total:</p>
+                    <p class="my-0">Delivery:</p>
+                    <p class="my-0">Amount Due:</p>
+                </div>
+                <div class="col-3">
+                    <!-- Rounding to two decimal places -->
+                    <p class="my-0">£{{ total | floatformat:2 }}</p>
+                    <!-- Rounding to two decimal places -->
+                    <p class="my-0">£{{ delivery | floatformat:2 }}</p>
+                    <!-- Rounding to two decimal places -->
+                    <p class="my-0"><strong>£{{ grand_total | floatformat:2 }}</strong></p>
+                </div>
+            </div>
+        </div>
+        <!-- Form block -->
+        <div class="col-12 col-lg-6">
+            <p class="text-muted">Please fill out the form below to complete your order</p>
+            <!-- Form posting to checkout view -->
+            <form action="{% url 'checkout' %}" method="POST" id="payment-form">
+                {% csrf_token %}
+                <fieldset class="rounded px-3 mb-5">
+                    <legend class="fieldset-label small text-black px-2 w-auto">Personal Information</legend>
+                    {{ order_form.full_name | as_crispy_field }}
+                    {{ order_form.email | as_crispy_field }}
+                    {{ order_form.has_artwork | as_crispy_field }}
+                </fieldset>
+                <fieldset class="rounded px-3 mb-5">
+                    <legend class="fieldset-label small text-black px-2 w-auto">Delivery</legend>
+
+                    {{ order_form.address_line1 | as_crispy_field }}
+                    {{ order_form.address_line2 | as_crispy_field }}
+                    {{ order_form.city | as_crispy_field }}
+                    {{ order_form.county | as_crispy_field }}
+                    {{ order_form.postcode | as_crispy_field }}
+                    {{ order_form.country | as_crispy_field }}
+                    {{ order_form.phone_number | as_crispy_field }}
+
+                    <div class="form-check form-check-inline me-0 float-end text-end">
+                        <!-- If user session exists -->
+                        {% if user.is_authenticated %}
+                        <label class="form-check-label" for="id-save-info">Update my account with this
+                            information</label>
+                        <input class="form-check-input ml-2 mr-0" type="checkbox" id="id-save-info" name="save-info"
+                            checked>
+                        <!-- If no user session -->
+                        {% else %}
+                        <label class="form-check-label" for="id-save-info">
+                            <!-- Anchor directing to allauth account signup view -->
+                            <a class="text-info" href="{% url 'account_signup' %}">Create an account</a> or
+                            <!-- Anchor directing to alluth account login view -->
+                            <a class="text-info" href="{% url 'account_login' %}">login</a> to save this information
+                        </label>
+                        {% endif %}
+                    </div>
+                </fieldset>
+                <!-- Stripe card block -->
+                <fieldset class="px-3">
+                    <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
+                    <!-- A Stripe card element will go here -->
+                    <div class="mb-3" id="card-element"></div>
+                    <!-- Used to display form errors -->
+                    <div class="mb-3 text-danger" id="card-errors" role="alert"></div>
+                    <!-- Pass the client secret to the view so we can get the payment intent id -->
+                    <input type="hidden" value="{{ client_secret }}" name="client_secret">
+                </fieldset>
+                <!-- Buttons block -->
+                <div class="text-end mb-2 me-3">
+                    <!-- Back to Cart button directing to cart view -->
+                    <a href="{% url 'cart' %}" class="btn mt-1">
+                        <span class="icon">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </span>
+                        <span class="font-weight-bold">Back to Cart</span>
+                    </a>
+                    <!-- Purchase now button to submit form-->
+                    <button id="submit-button" class="btn mt-1">
+
+                        <span class="icon">
+                            <i class="fa-solid fa-credit-card"></i>
+                        </span>
+                        <span class="font-weight-bold">Purchase Now</span>
+                    </button>
+                    <!-- Advisory charge text -->
+                    <p class="small text-danger mt-2">
+                        <span class="icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </span>
+                        <span>Your card will be charged <strong>£{{ grand_total|floatformat:2 }}</strong></span>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Card processing overlay icon and text -->
+<div id="card-processing">
+    <h1 class="text-light logo-font icon-loader">
+        <span class="icon text-center">
+            <i class="fas fa-spinner fa-spin mb-2"></i>
+            <strong class="load-text">
+                Processing...<br>
+                Please do not close this page<br>
+            </strong>
+        </span>
+    </h1>
+</div>
+{% endblock %}
+
+<!-- Custom javascript injection -->
+{% block postjs %}
+<!-- Add don't overwrite -->
+{{ block.super }}
+<!-- Stripe public key injection -->
+{{ stripe_public_key|json_script:"id_stripe_public_key" }}
+<!-- Stripe client secret injection -->
+{{ client_secret|json_script:"id_client_secret" }}
+<!-- Load static stripe js file for form styling -->
+<script src="{% static 'checkout/js/stripe.js' %}"></script>
+{% endblock %}

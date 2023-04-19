@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Message Centre{% endblock %}
+
+<!-- Inject profile css into this template -->
+{% block add_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
+<!-- Page header -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+<!-- Main content block -->
+{% block content %}
+<!-- Background image overlay -->
+<div class="overlay"></div>
+<div class="container">
+    <!-- Page title -->
+    <div class="row justify-content-center">
+        <div class="col-10 col-offset-1">
+            <hr>
+            <h2>Message Centre</h2>
+            <hr>
+        </div>
+    </div>
+    <!-- Messages block -->
+    <div class="row messages justify-content-center">
+        <div class="col-10 col-offset-1">
+            <!-- If user has messages -->
+            {% if user_messages %}
+            <p class="text-muted">Your Contact History</p>
+            <div class="table-responsive">
+                <!-- Table content -->
+                <table class="table table-sm table-borderless">
+                    <thead>
+                        <tr>
+                            <th>View Message</th>
+                            <th>Date</th>
+                            <th>Subject</th>
+                            <th>Message</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Iterate through user messages -->
+                        {% for message in user_messages %}
+                        <tr>
+                            <td>
+                                <!-- Button linking to specific message page -->
+                                <a class="btn" role='button' href="{% url 'past_message' message.id %}">Message:
+                                    {{ message.id }}
+                                </a>
+                            </td>
+                            <td>{{ message.date }}</td>
+                            <td>
+                                {{ message.subject }}
+                            </td>
+                            <td>
+                                <!-- Truncate contact message after 20 characters -->
+                                {{ message.message|truncatechars:20 }}</td>
+                            <td>
+                                <!-- If subject of message is GENERAL -->
+                                {% if message.subject == 'GENERAL' %}
+                                <small class="ml-3">
+                                    <!-- Edit Button -->
+                                    <a class="btn mt-1" role='button' href="{% url 'edit_message' message.id %}">Edit
+                                        Query
+                                    </a>
+                                    <!-- Delete Button with modal trigger -->
+                                    <button type="button" class="btn mt-1" data-bs-toggle="modal"
+                                        data-bs-target="#modal-{{ message.id }}">
+                                        Delete
+                                    </button>
+                                </small>
+                                {% endif %}
+                                <!-- If subject of message is QUOTE -->
+                                {% if message.subject == 'QUOTE' %}
+                                <small class="ml-3">
+                                    <!-- Edit Button -->
+                                    <a class="btn mt-1" role='button' href="{% url 'edit_message' message.id %}">Edit
+                                        Quote
+                                    </a>
+                                    <!-- Delete Button with modal trigger-->
+                                    <button type="button" class="btn mt-1" data-bs-toggle="modal"
+                                        data-bs-target="#modal-{{ message.id }}">
+                                        Delete
+                                    </button>
+                                </small>
+                                {% endif %}
+                                <!-- If subject of message is COMPLAINT -->
+                                {% if message.subject == 'COMPLAINT' %}
+                                <small class="ml-3">
+                                    <!-- Delete/Resolved Button with modal trigger-->
+                                    <button type="button" class="btn" data-bs-toggle="modal"
+                                        data-bs-target="#modal-{{ message.id }}">
+                                        Resolved
+                                    </button>
+                                </small>
+                                {% endif %}
+                                <!-- If subject of message is PARTNERS -->
+                                {% if message.subject == 'PARTNERS' %}
+                                <p>Someone will contact your shortly.</p>
+                                {% endif %}
+                                <!-- Modal -->
+                                <div class="modal fade text-black" id="modal-{{ message.id }}" tabindex="-1"
+                                    aria-labelledby="modal-{{ message.id }}" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Are you sure you want to delete
+                                                    your Message?</h5>
+                                                <!-- Button to close modal dialog -->
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Your message will be removed and we will not contact you.
+                                            </div>
+                                            <div class="modal-footer">
+                                                <!-- Back button to close modal dialog -->
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Back</button>
+                                                <!-- Delete button passing message id to view -->
+                                                <a class="btn btn-danger" role='button'
+                                                    href="{% url 'delete_message' message.id %}">Confirm Deletion
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- If user has no messages -->
+        {% else %}
+        <p class="text-muted">You have no Saved Messages</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

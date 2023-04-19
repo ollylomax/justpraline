@@ -1,0 +1,37 @@
+{% extends "account/base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Register{% endblock %}
+
+<!-- Inject profile css into this template -->
+{% block add_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block inner %}
+<hr>
+<h2>{% trans "Sign Up" %}</h2>
+<hr>
+
+<!-- Form with POST directing to account signup view -->
+<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+  <!-- Django csrf token -->
+  {% csrf_token %}
+  <!-- Form rendered from models as crispy form -->
+  {{ form|crispy }}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <!-- Sign Up button which submits form -->
+  <button class="btn float-end mt-2" type="submit">{% trans "Sign Up" %}</button>
+</form>
+<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">Login</a>.{% endblocktrans %}</p>
+
+{% endblock %}

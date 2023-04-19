@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Home{% endblock %}
+
+<!-- Page header -->
+{% block content %}
+<div class="hero container h-100 mt-5">
+    <div class="row h-100">
+        <div class="col-12 col-md-6 my-auto">
+            <div class="hero-wrapper">
+                <!-- Hero image heading -->
+                <h1 class="display-4">
+                    Nuts about Praline!
+                </h1>
+                <!-- Hero image text -->
+                <p>Organic. Gluten Free. Highest quality ingredients. Sustainably Sourced Palm Oil.</p>
+                <p>100% hand made. Low carbon footprint.</p>
+            </div>
+            <!-- Desktop buttons -->
+            <div class="my-5 d-none d-lg-block">
+                <h4>
+                    <!-- Products button directing to products view -->
+                    <a href="{% url 'products' %}" class="btn btn-lg mt-2">Our Pralines</a>
+                    <br class="d-block d-lg-none">
+                    <!-- Contact Us button directing to contact view -->
+                    <a href="{% url 'contact' %}" class="btn btn-lg mt-2">Contact Us</a>
+                </h4>
+            </div>
+            <!-- Mobile buttons -->
+            <div class="d-block d-lg-none">
+                    <!-- Products button directing to products view -->
+                    <a href="{% url 'products' %}" class="btn">Our Pralines</a>
+                    <!-- Contact Us button directing to contact view -->
+                    <a href="{% url 'contact' %}" class="btn">Contact Us</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

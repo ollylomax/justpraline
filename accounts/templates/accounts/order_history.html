@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Order History{% endblock %}
+
+<!-- Inject profile css into this template -->
+{% block add_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
+<!-- Page header -->
+{% block page_header %}
+<div class="container header-container">
+    <div class="row">
+        <div class="col"></div>
+    </div>
+</div>
+{% endblock %}
+
+
+<!-- Main content block -->
+{% block content %}
+<!-- Background image overlay -->
+<div class="overlay"></div>
+<div class="container">
+    <!-- Page title -->
+    <div class="row justify-content-center">
+        <div class="col-10 col-offset-1">
+            <hr>
+            <h2 class="mb-4">Order History</h2>
+            <hr>
+        </div>
+    </div>
+    <!-- Orders block -->
+    <div class="row orders justify-content-center">
+        <div class="col-10 col-offset-1">
+            <p class="text-muted">Your Orders Below</p>
+            <div class="order-history table-responsive">
+                <!-- Table content -->
+                <table class="table table-sm table-borderless">
+                    <thead>
+                        <tr>
+                            <th>View Order</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Order Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Iterate through orders -->
+                        {% for order in orders %}
+                        <tr>
+                            <td>
+                                <!-- Button directing to specific order page -->
+                                <a class="btn" role='button'
+                                    href="{% url 'past_order' order.order_number %}">{{ order.order_number|truncatechars:15 }}
+                                </a>
+                            </td>
+                            <td>{{ order.date }}</td>
+                            <td>
+                                <ul class="list-unstyled">
+                                    <!-- Iterate through lineitems of order -->
+                                    {% for item in order.lineitems.all %}
+                                    <li class="small">
+                                        {{ item.service.name }} x{{ item.quantity }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>£{{ order.grand_total }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

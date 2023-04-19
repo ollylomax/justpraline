@@ -1,0 +1,20 @@
+{% if widget.is_initial %}
+    <p>{{ widget.initial_text }}:</p>
+    <!-- Custom image preview -->
+    <a href="{{ widget.value.url }}">
+        <img width="96" height="96" class="rounded shadow-sm" src="{{ widget.value.url }}" alt ="{{ widget.value }}">
+    </a>
+    {% if not widget.required %}
+        <div class="custom-control custom-checkbox mt-2">
+            <input class="custom-control-input" type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}">
+            <label class="custom-control-label text-danger" for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
+        </div>
+    {% endif %}<br>
+    {{ widget.input_text }}
+{% endif %}
+<!-- Custom image selector button with id linking to custom javascript injected from edit/add product templates -->
+<span class="btn float-end mt-2 mb-2 btn-file">
+    Select Image <input class="new-image" type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
+</span>
+<!-- Custom image name display with id linking to custom javascript injected from edit/add product templates -->
+<p><strong class="filename"></strong></p>

@@ -1,0 +1,34 @@
+/* Tables */
+
+table {
+    margin: 0 auto !important;
+}
+
+.messages thead > tr,
+.orders thead > tr,
+.artwork thead > tr {
+    background-color: #001087;
+    border: 1px solid black;
+    color: #fff;
+}
+
+.messages tbody > tr,
+.orders tbody > tr,
+.artwork tbody > tr  {
+    border: 1px solid black;
+}
+
+.messages tbody > tr:hover,
+.orders tbody > tr:hover,
+.artwork tbody > tr:hover {
+    background-color: #6489fa;
+    border: 1px solid black;
+    color: #fff;
+}
+
+/* Forms */
+
+form input,
+form select {
+    margin-top: 0.3rem;
+}

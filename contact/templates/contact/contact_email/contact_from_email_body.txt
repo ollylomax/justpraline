@@ -1,0 +1,11 @@
+Hi Admin,
+
+Contact from website user below:
+
+{{ form.first_name.value }}
+{{ form.last_name.value }}
+{{ form.message.value }}
+
+Please log into admin to review.
+
+Venture Press

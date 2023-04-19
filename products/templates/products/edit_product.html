@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Edit Product{% endblock %}
+
+<!-- Page header -->
+{% block page_header %}
+    <div class="container header-container">
+        <div class="row">
+            <div class="col"></div>
+        </div>
+    </div>
+{% endblock %}
+
+<!-- Main content block -->
+{% block content %}
+<!-- Background image overlay -->
+    <div class="overlay"></div>
+    <div class="container">
+        <!-- Page title -->
+        <div class="row justify-content-center">
+            <div class="col-10 col-offset-1">
+                <hr>
+                <h2>Edit Product</h2>
+                <hr>
+            </div>
+        </div>
+        <!-- Form block -->
+        <div class="row justify-content-center">
+            <div class="col-10 col-offset-1">
+                <form method="POST" action="{% url 'edit_product' product.id %}" class="form mb-2" enctype="multipart/form-data">
+                    <!-- Django csrf token -->
+                    {% csrf_token %}
+                    <!-- Render all fields as crispy fields except image to remove placeholder -->
+                    {% for field in form %}
+                        {% if field.name != 'image' %}
+                            {{ field | as_crispy_field }}
+                        {% else %}
+                            {{ field }}
+                        {% endif %}
+                    {% endfor %}
+                    <div class="float-end">
+                        <!-- Back to Print Products button directing to products view -->
+                    <a class="btn mt-2" href="{% url 'products' %}">Back to Products</a>
+                    <!-- Confirm Edit button which submits form -->
+                    <button class="btn mt-2" type="submit">Confirm Edit</button>
+                    </div>
+                </form>
+            </div>            
+        </div>
+    </div>
+{% endblock %}
+
+<!-- Custom javascript injection -->
+{% block postjs %}
+<!-- Add but don't overwrite -->
+{{ block.super }}
+<!-- Custom script to change layout and styling in clearablefileinput widget -->
+<script>
+    $('#new-image').change(function () {
+        var file = $('#new-image')[0].files[0];
+        $('#filename').text(file.name);
+    });
+</script>
+{% endblock %}

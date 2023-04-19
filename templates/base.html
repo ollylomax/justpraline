@@ -1,0 +1,321 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {% block meta %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Custom Meta -->
+    <meta name="description"
+        content="Just Praline kitchen focuses on hand-crafting pralines from all nuts with the highest quality ingredients">
+    <meta name="keywords" content="praline, pralines, nuts, chocolates, cashew, hazelnut, pistachio, pecan">
+    <meta name="author" content="Just Praline Ltd">
+    {% endblock %}
+
+    <!-- Bootstrap frameworks stylesheet -->
+    {% block corecss %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <!-- Font Awesome minified style sheet -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" type="text/css" />
+    <!-- Project level style sheet -->
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% endblock %}
+
+    <!-- Extra css block to inject from templates -->
+    {% block add_css %}
+    {% endblock %}
+
+    {% block corejs %}
+    <!-- jQuery import -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+    <!-- Boostrap javascript imports -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+        integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
+        integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous">
+    </script>
+
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+    {% endblock %}
+
+    <!-- Favicon links -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ MEDIA_URL }}favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ MEDIA_URL }}favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ MEDIA_URL }}favicon/favicon-16x16.png">
+    <link rel="manifest" href="{{ MEDIA_URL }}favicon/site.webmanifest">
+    <!-- favicon links end -->
+
+    <!-- Main page title with suffix block to inject from inherited templates -->
+    <title>Just Praline {% block title_suffix %}{% endblock %}</title>
+</head>
+
+<body>
+    <header class="container-fluid fixed-top">
+
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <!-- Logo and Logo text -->
+                <a class="text-white navbar-brand mt-1" href="{% url 'home' %}"><img class="logo"
+                        src="{{ MEDIA_URL}}jp.png" alt="Just Praline Logo"></a>
+                <!-- Mobile burger toggler -->
+                <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav">
+                        <!-- Search query form directing to products view -->
+                        <li>
+                            <form method="GET" action="{% url 'products' %}">
+                                <div class="input-group w-100 nav-index">
+                                    <!-- Search input field with placeholder -->
+                                    <input class="search-input form-control border border-black rounded-0" type="text"
+                                        name="query" placeholder="Search" aria-label="Search Box">
+                                    <div class="input-group-append">
+                                        <!-- Search button which submits the form -->
+                                        <button class="form-control btn btn-black border border-black rounded-0"
+                                            type="submit" aria-label="Search Button">
+                                            <span class="icon text-white">
+                                                <i class="fas fa-search"></i>
+                                            </span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <!-- Home nav link and icon -->
+                        <li class="nav-item">
+                            <div class="d-none d-lg-block text-center text-white"><i
+                                class="fa-solid fa-house-crack"></i></div>
+                            <!-- Home button directing to home view -->
+                            <a class="text-white nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                        </li>
+                        <!-- Products nav dropdown link and icon -->
+                        <li class="nav-item dropdown">
+                            <div class="d-none d-lg-block text-center text-white"><i
+                                    class="dd-icon fa-solid fa-scroll"></i></div>
+                            <a class="text-white nav-link dropdown-toggle" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Our Pralines
+                            </a>
+                            <!-- Unordered list of dropdown menu choices -->
+                            <ul class="dropdown-menu text-white" aria-labelledby="Products" id="Products">
+                                <!-- Category link directing to products view with category query -->
+                                {% for category in nav_categories %}                             
+                                <li><a class="dropdown-item"
+                                        href="{% url 'products' %}?category={{ category }}">{{ category }}</a></li>
+                                {% endfor %}
+                                <!-- All Products link directing to products view -->
+                                <li><a class="dropdown-item" href="{% url 'products' %}">All Pralines</a></li>
+                            </ul>
+                        </li>
+                        <!-- Contact nav link and icon -->
+                        <li class="nav-item">
+                            <div class="d-none d-lg-block text-center text-white"><i class="fa-solid fa-marker"></i>
+                            </div>
+                            <!-- Contact button directing to contact view -->
+                            <a class="text-white nav-link" href="{% url 'contact' %}">Contact</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <!-- Conditional to check if user session exists -->
+                        {% if request.user.is_authenticated %}
+                        <!-- Account(username) nav dropdown link and icon -->
+                        <li class="nav-item dropdown">
+                            <div class="d-none d-lg-block text-center text-white"><i
+                                    class="dd-icon fa-solid fa-user"></i></div>
+                            <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ request.user }}
+                            </a>
+                            <!-- Unordered list of dropdown menu choices -->
+                            <ul class="dropdown-menu" aria-labelledby="UserProfile" id="UserProfile">
+                                <!-- Profile link directing to profile view -->
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                                <!-- Order History link directing to order history view -->
+                                <li><a class="dropdown-item" href="{% url 'order_history' %}">Order History</a></li>
+                                <!-- Message Centre link directing to message centre view -->
+                                <li><a class="dropdown-item" href="{% url 'message_centre' %}">Message Centre</a></li>
+                                <!-- Conditional to check if user status is superuser -->
+                                {% if request.user.is_superuser %}
+                                <!-- Add Product link directing to add product view -->
+                                <li><a class="dropdown-item" href="{% url 'add_product' %}">Add Product</a></li>
+                                {% endif %}
+                                <!-- Change Password link directing to account change password view -->
+                                <li><a class="dropdown-item" href="{% url 'account_change_password' %}">Change
+                                        Password</a></li>
+                                <!-- Logout link directing to account logout view -->
+                                <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+                            </ul>
+                        </li>
+                        <!-- If no user session exists -->
+                        {% else %}
+                        <!-- Login nav link and icon -->
+                        <li class="nav-item">
+                            <div class="d-none d-lg-block text-center text-white"><i class="fa-solid fa-key"></i></div>
+                            <!-- Login button directing to account login view -->
+                            <a class="text-white nav-link" href="{% url 'account_login' %}">Login</a>
+                        </li>
+                        <!-- Register nav link and icon -->
+                        <li class="nav-item">
+                            <div class="d-none d-lg-block text-center text-white"><i class="fa-solid fa-key"></i></div>
+                            <!-- Register link directing to account signup view -->
+                            <a class="text-white nav-link" href="{% url 'account_signup' %}">Register</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <!-- Cart link and icon -->
+                    <div class="nav-item">
+                        <!-- Cart button directing to cart view and targetted by custom javascript to initiate mini cart -->
+                        <a class="cart-trigger {% if grand_total %}text-info font-weight-bold{% else %}text-black{% endif %} nav-link"
+                            href="{% url 'cart' %}">
+                            <div class="text-center text-white">
+                                <div><i class="fa-solid fa-cart-flatbed"></i></div>
+                                <p class="my-0">
+                                    <!-- Conditional to check if grand total exists (cart has products) -->
+                                    {% if grand_total %}
+                                    <!-- Round to two decimal places -->
+                                    £{{ grand_total|floatformat:2 }}
+                                    <!-- If no grand total (nothing in cart) -->
+                                    {% else %}
+                                    £0.00
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+    </header>
+
+    <!-- Mini cart includes hidden by default -->
+    <div class="cart-container d-none">
+        <!-- Conditional to check if grand total (cart has items) -->
+        {% if grand_total %}
+        <!-- Include mini cart template -->
+        {% include 'includes/mini-cart.html' %}
+        {% endif %}
+    </div>
+
+    <!-- Conditional to check if messages for toast includes -->
+    {% if messages %}
+    <div class="message-container">
+        <!-- Iterate over messages -->
+        {% for message in messages %}
+        <!-- Use bultin message levels to determine which toast to display -->
+        {% with message.level as level %}
+        <!-- Conditional to check level -->
+        {% if level == 40 %}
+        {% include 'includes/toasts/toast_error.html' %}
+        <!-- Conditional to check level -->
+        {% elif level == 30 %}
+        {% include 'includes/toasts/toast_warning.html' %}
+        <!-- Conditional to check level -->
+        {% elif level == 25 %}
+        {% include 'includes/toasts/toast_success.html' %}
+        <!-- If none of above levels -->
+        {% else %}
+        {% include 'includes/toasts/toast_info.html' %}
+        {% endif %}
+        {% endwith %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% block header %}
+    {% endblock %}
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Custom javascript injection -->
+    {% block postjs %}
+    <script>
+        // Initialise toast messages
+        $(document).ready(function () {
+            $(".toast").toast('show');
+        });
+        // Show mini cart on trigger hover
+        $(".cart-trigger").mouseover(function () {
+            $(".cart-container").addClass('d-lg-block');
+        });
+        // Hide mini cart after 3 seconds on cart mouseleave
+        $(".cart").mouseleave(function () {
+            setTimeout(function () {
+                $(".cart-container").removeClass('d-lg-block')
+            }, 3000);
+        });
+        // Show mini cart on container hover
+        $(".cart-container").mouseenter(function () {
+            $(".cart-container").addClass('d-lg-block');
+        });
+        // Hide mini cart on clicking close button
+        $("#close").click(function () {
+            $(".cart-container").removeClass('d-lg-block');
+        });
+        // Get current year in footer copyright by assigning new date object to year id
+        $(document).ready(function () {
+            document.getElementById("year").innerHTML = new Date().getFullYear();
+        });
+    </script>
+    {% endblock %}
+
+    <!-- Footer -->
+    <footer class="container-fluid fixed-bottom d-flex flex-wrap justify-content-between py-3">
+        <div class="col-12 col-lg-4 d-flex justify-content-center">
+            <!-- Copywright span with innerHTML current year injected from javascript by id -->
+            <span class="text-white text-center">© <span id="year"></span> Just Praline All Rights Reserved</span>
+        </div>
+
+        <ul class="nav col-12 col-lg-4 justify-content-center list-unstyled d-flex">
+            <li class="social">
+                <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="Twitter link">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+            </li>
+            <!-- List item for instagram icon anchor with link opening in new window -->
+            <li class="social">
+                <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram link">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+            </li>
+            <!-- List item for youtube icon anchor with link opening in new window -->
+            <li class="social">
+                <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="Youtube link">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+            </li>
+            <!-- List item for pinterest icon anchor with link opening in new window -->
+            <li class="social">
+                <a href="https://pinterest.com" target="_blank" rel="noopener" aria-label="Pinterest link">
+                    <i class="fa-brands fa-pinterest"></i>
+                </a>
+            </li>
+            <!-- List item for facebook icon anchor with link opening in new window -->
+            <li class="social">
+                <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook link">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+            </li>
+        </ul>
+    </footer>
+
+</body>
+
+</html>

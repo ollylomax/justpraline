@@ -1,0 +1,1 @@
+web: gunicorn just_praline.wsgi:application

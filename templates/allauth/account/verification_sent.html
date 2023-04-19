@@ -1,0 +1,28 @@
+{% extends "account/base.html" %}
+
+<!-- Load static files -->
+{% load static %}
+
+<!-- Add corresponding page suffix to base page title -->
+{% block title_suffix %}- Verification Sent{% endblock %}
+
+<!-- Inject profile css into this template -->
+{% block add_css %}
+<link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+{% endblock %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+
+{% block inner %}
+    <hr>
+    <h2>{% trans "Verify Your Email" %}</h2>
+    <hr>
+
+    <p>{% blocktrans %}An email has been sent to you with instructions on whow to complete the sign up process.{% endblocktrans %}</p>
+    <p>If you do not receive it within a few minutes, please <a href="{% url 'contact' %}">contact</a> us.</p>
+    <!-- Home button which directs to home page -->
+    <a class="btn float-end mt-2" href="{% url 'home' %}">Home</a>
+
+{% endblock %}

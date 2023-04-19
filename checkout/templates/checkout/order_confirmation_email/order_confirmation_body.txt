@@ -1,0 +1,31 @@
+Hi {{ order.full_name }},
+
+A big thank you for your order from Venture Press!
+
+Your order has been received and the details are attached below:-
+
+Date: {{ order.date }}
+Order Number: {{ order.order_number }}
+
+Total: £{{ order.order_total }}
+Delivery: £{{ order.delivery_cost }}
+Amount Paid: £{{ order.grand_total }}
+
+Your order will be sent out the following day and be delivered to:-
+
+{{ order.full_name }}
+{{ order.address_line1 }}
+{{ order.address_line2 }}
+{{ order.city }}
+{{ order.postcode }}
+{{ order.country }}.
+
+If there are any problems with your order we will contact you on {{ order.phone_number }} or at {{ order.email }}
+
+Please feel free to contact us at {{ vp_email }} if you have any questions.
+
+Thank you for your custom on behalf of all here at Venture Press!
+
+Kind regards
+
+Venture Press Team
