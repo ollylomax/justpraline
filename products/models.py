@@ -69,6 +69,8 @@ class Product(models.Model):
     nutritional = models.TextField(max_length=254)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(null=True, blank=True)
+    has_stock = models.BooleanField(null=False, blank=False, default=True)
+    is_new = models.BooleanField(null=True, blank=True, default=False)
 
 
     def __str__(self):

@@ -7,11 +7,11 @@ html {
 }
 
 body {
+    color: #555;
+    font-family: 'Roboto';
     background: url('/media/nuts.png') no-repeat center center fixed;
     background-size: cover;
     height: 100vh;
-    color: #555;
-    font-family: 'Roboto';
 }
 
 .overlay {
@@ -21,6 +21,7 @@ body {
     left: 0;
     position: fixed;
     background: url('/media/overlay-image.jpg') no-repeat center center fixed;
+    opacity:50%;
     background-size: cover;
     height: 100vh;
     color: #555;
@@ -465,10 +466,6 @@ td {
 
     .hero {
         text-align: left;
-    }
-
-    .hero .btn {
-        margin-left: 1rem;
     }
 
     /* Footer */

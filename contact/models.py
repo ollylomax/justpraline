@@ -29,3 +29,13 @@ class Messages(models.Model):
     subject = models.CharField(
         max_length=10, choices=SUBJECTS, default='GENERAL')
     message = models.TextField(max_length=200, null=False, blank=False)
+
+
+class Review(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=80, null=True, blank=True)
+    last_name = models.CharField(max_length=80, null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    appear_anonymous = models.BooleanField(null=False, blank=False, default=False)
+    is_approved = models.BooleanField(null=False, blank=False, default=False)
+    review = models.TextField(max_length=200, null=False, blank=False)

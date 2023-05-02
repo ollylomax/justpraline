@@ -50,16 +50,19 @@ class main_handler:
         """
         Stripe payment_intent.succeeded webhook handler
         """
-        intent = event.data.object
+        intent = event.data.object.retrieve(
+            event.data.object.id, expand=["latest_charge"])
         pid = intent.id
         # JSON version of cart from intent
         cart = intent.metadata.cart
         # Save info checkbox boolean
         save_info = intent.metadata.save_info
 
-        billing_details = intent.charges.data[0].billing_details
+        # print(intent.retrieve(pid, expand=["latest_charge"]))
+
+        billing_details = intent.latest_charge.billing_details
         shipping_details = intent.shipping
-        grand_total = round(intent.charges.data[0].amount / 100, 2)
+        grand_total = round(intent.latest_charge.amount / 100, 2)
 
         # Iterate through address to replace empty fields with None
         for field, value in shipping_details.address.items():

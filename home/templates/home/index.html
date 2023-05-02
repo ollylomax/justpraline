@@ -10,26 +10,25 @@
 {% block content %}
 <div class="hero container h-100 mt-5">
     <div class="row h-100">
-        <div class="col-12 col-md-6 my-auto">
+        <div class="col-12 my-auto">
             <div class="hero-wrapper">
                 <!-- Hero image heading -->
                 <h1 class="display-4">
                     Nuts about Praline!
                 </h1>
                 <!-- Hero image text -->
-                <p>Organic. Gluten Free. Highest quality ingredients. Sustainably Sourced Palm Oil.</p>
-                <p>100% hand made. Low carbon footprint.</p>
-            </div>
-            <!-- Desktop buttons -->
-            <div class="my-5 d-none d-lg-block">
-                <h4>
+                <p>Try out delicious treats made using the highest quality ingredients and our entire range is gluten-free, making them suitable for people with gluten allergies or sensitivities. These pralines have a low carbon footprint, making them a great choice for people who are concerned about the environment. So if you're looking for a delicious and guilt-free treat, check out our range!</p>
+                <p>Every praline is 100% hand-made, which means that each praline is given the utmost care and attention. This ensures that each praline is of the highest quality and has a unique flavor profile. The low carbon footprint of these pralines is also a major benefit, as they are made using sustainable practices that minimize the impact on the environment.</p>
+                <!-- Desktop buttons -->
+            <div class="mt-3 d-none d-lg-block">
+                <h4 class="text-center">
                     <!-- Products button directing to products view -->
                     <a href="{% url 'products' %}" class="btn btn-lg mt-2">Our Pralines</a>
                     <br class="d-block d-lg-none">
-                    <!-- Contact Us button directing to contact view -->
-                    <a href="{% url 'contact' %}" class="btn btn-lg mt-2">Contact Us</a>
                 </h4>
             </div>
+            </div>
+            
             <!-- Mobile buttons -->
             <div class="d-block d-lg-none">
                     <!-- Products button directing to products view -->
@@ -39,5 +38,181 @@
             </div>
         </div>
     </div>
+    <div class="row bg-light mx-3 rounded border border-dark mt-5">
+        <div class="col-12 pt-3">
+            <img src="/media/story-bg.jpg" alt="Various Nuts" style='width: 100%;'>
+            <h5 class="pt-3">Our Story</h5>
+        <p>Brighton is a vibrant city located on the south coast of England, known for its rich cultural heritage, lively nightlife, and beautiful beaches. One of the many unique aspects of Brighton is its thriving local food scene, which includes a variety of small businesses specializing in artisanal chocolates. One such company is a small chocolate-making company based in Brighton, known for its high-quality, handcrafted chocolates made with the finest ingredients.
+    
+            The company was founded by a passionate chocolatier who was inspired by the rich tradition of chocolate-making in Belgium and France. Using this knowledge and expertise, they have created a range of unique and delicious chocolates that have won over the hearts of chocolate lovers in Brighton and beyond.
+            
+            The company's chocolates are made using only the highest quality ingredients, including ethically sourced cocoa beans from some of the world's best chocolate producers. The chocolates are made in small batches, ensuring that each one is given the utmost care and attention to detail. The company also offers a range of dairy-free and vegan chocolates, making it a favorite among those with dietary restrictions.</p>
+            <img src="/media/pano.jpg" alt="Panoromic of Brighton" style='width: 100%;'>
+            
+            <p>In addition to its delicious chocolates, the company also offers workshops and events, allowing visitors to learn about the art of chocolate-making firsthand. These workshops are a great way to learn more about the process of making chocolate and to sample some of the company's delicious creations.
+            
+            Despite its small size, the company has gained a loyal following in Brighton and beyond, thanks to its commitment to quality and passion for chocolate-making. With its unique and delicious range of chocolates and commitment to sustainability and ethical sourcing, this small chocolate-making company is a shining example of the best of Brighton's local food scene.</p>
+    </div>
+    </div>
+     <!-- Products block -->
+     <div class="row justify-content-center">
+        <!-- Iterate through products -->
+        {% for product in products %}
+        <div class="card-group col-sm-12 col-md-6 col-lg-4">
+            <!-- Bootstrap card directing to product detail page passing the product id -->
+            <div class="card">
+                <div class="card-header tags p-3">
+                    <div class="row">
+                        <div class="col-6">
+                            {% if product.is_new %}
+                            <span class="badge bg-success">NEW PRODUCT</span>
+                            {% endif %}
+                        </div>
+                        <div class="col-6 text-end">
+                            <span>
+                            {% for tag in product.tags.all %}
+                            <i class="mr-4 fa-lg fa-solid fa-tree" style="color: rgb(10, 167, 17)" data-toggle="tooltip" data-bs-placement="top" title="{{ tag }}"></i>
+                            {% endfor %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+              <!-- If product has image uploaded -->
+                    {% if product.image %}
+                    <!-- Product image served from media directory -->
+                    <img class="card-img-top" src="{{ MEDIA_URL }}{{ product.image }}" alt="{{ product.name }}">
+                    <!-- If product has no image -->
+                    {% else %}
+                    <!-- Placeholder image served from media directory -->
+                    <img class="card-img-top" src="{{ MEDIA_URL }}placeholder.jpg" alt="{{ product.name }}">
+                    {% endif %}
+                <div class="card-body">
+                    <!-- Bootstrap stretched link anchor passing product id to product detail view -->
+                    <a href="{% url 'product_detail' product.id %}" class="stretched-link" aria-label="{{ product.name }}"></a>
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <div class="edition {{ product.edition|lower|cut:' ' }}">
+                    <h6>{{ product.edition }}</h6>
+                    </div>
+                    <!-- Truncate text after 200 characters -->
+                    <p class="card-text">{{ product.description|truncatechars:200 }}</p>
+                    <small style="color: #874c00;">Read More</small>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">£{{ product.price }} per Box of 10 Pralines</li>
+                    <li class="list-group-item">{% for tag in product.tags.all %}
+                        <span class="badge text-bg-dark">{{ tag }}</span>
+                        {% endfor %}</li>
+                </ul>
+                <!-- Conditional to check is user session has superuser status -->
+
+
+                <div class="card-footer">
+                <!-- Form with POST passing product id to the add to cart view -->
+                <form class="form" action="{% url 'add_to_cart' product.id %}" method="POST">
+                    <!-- Django csrf token -->
+                    {% csrf_token %}
+                    <div class="row form-row">
+                        <div class="col-6 text-center">
+                            {% if product.has_stock %}
+                            <span><i class="fas fa-square fa-xs" style="color: #3bc814; line-height: 2.3rem;"></i> In Stock</span>
+                            {% else %}
+                            <span><i class="fas fa-square fa-xs" style="color: #b80f0f; line-height: 2.3rem;"></i> Out of Stock</span>
+                            {% endif %}
+                        </div>
+                        <div class="col-6">
+                            <!-- Add to Cart button which submits form -->
+                            {% if product.has_stock %}
+                            <input type="submit" class="btn" value="Add to Cart">
+                            {% else %}
+                            <input type="submit" class="btn" value="Coming Soon" disabled>
+                            {% endif %}
+                        </div>
+                        <!-- Hidden input to send path to view -->
+                        <input type="hidden" name="path" value="{{ request.path }}">
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+            
+            <div class="container my-5 py-5">
+              <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10">
+                  <div class="card text-dark">
+                    <div class="card-body p-4">
+                      <h4 class="mb-0">Recent comments</h4>
+                      <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
+                        
+                      {% for review in reviews %}
+                      
+                      <div class="d-flex flex-start" id="reviews">
+                       
+                        <div>
+                          <h6 class="fw-bold mb-1">{{ review.first_name }} {{ review.last_name }}</h6>
+                          <div class="d-flex align-items-center mb-3">
+                            <p class="mb-0">
+                              {{ review.date }}
+                              {% if review.is_approved == False %}
+                              <span class="badge bg-primary">Pending</span>
+                              {% else %}
+                              <span class="badge bg-success">Approved</span>
+                              {% endif %}
+                            </p>
+                            {% if request.user.id == review.user.id %}
+                            <a href="{% url 'edit_review' review.id %}#review" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                            {% endif %}
+                          </div>
+                          <p class="mb-0">
+                            {{ review.review }}
+                          </p>
+                        </div>
+                      </div>
+                      <hr class="p-2" />
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  {% if user.is_authenticated %}
+                  {% if not current_review %}
+                  
+                  
+                  <div class="container my-5 py-5" id="review">
+                    <div class="card text-dark">
+                        <div class="card-body p-4">
+                            <h4 class="mb-0">Review Just Praline</h4>
+                      <p class="fw-light mb-4 pb-2">Please be responsible with your language, reviews are screened.</p>
+                      {% if review %}
+                    <form method="post" action="{% url 'edit_review' review.id %}#reviews">
+                     {% else %}
+                     <form method="post" action="{% url 'home' %}#reviews">
+                        {% endif %}
+                    <!-- Django csrf token -->
+                    {% csrf_token %}
+                    <!-- From rendered from models as crispy form -->
+                    {{ form|crispy }}
+                    <div class="form-actions">
+                        <!-- Send button which submits the form -->
+                        
+                        {% if review %}
+                        <button type="submit" class="btn float-end mt-2">Update</button>
+                        {% else %}
+                        <button type="submit" class="btn float-end mt-2">Send</button>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+                </div>
+              </div>
+            </div>
+
 </div>
+
+
 {% endblock %}
