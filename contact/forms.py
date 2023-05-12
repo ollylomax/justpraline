@@ -1,5 +1,5 @@
 from django import forms
-from .models import Messages, Review
+from .models import Messages, Review, ProductReview
 
 
 class ContactForm(forms.ModelForm):
@@ -29,3 +29,18 @@ class ReviewForm(forms.ModelForm):
         fields = (
             'user', 'first_name', 'last_name',
             'is_approved', 'appear_anonymous', 'review')
+
+
+class ProductReviewForm(forms.ModelForm):
+    """
+    Review form using Messages model with hidden user field using widgets.
+    """
+    class Meta:
+        model = ProductReview
+        widgets = {
+            'user': forms.HiddenInput(),
+            'is_approved': forms.HiddenInput(),
+        }
+        fields = (
+            'user', 'product', 'first_name', 'last_name',
+            'is_approved', 'appear_anonymous', 'product_review')

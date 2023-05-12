@@ -146,12 +146,12 @@
                       <h4 class="mb-0">Recent comments</h4>
                       <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
                         
-                      {% for review in reviews %}
+                      {% for review in page_obj %}
                       
                       <div class="d-flex flex-start" id="reviews">
                        
                         <div>
-                          <h6 class="fw-bold mb-1">{{ review.first_name }} {{ review.last_name }}</h6>
+                          <h5><span class="fw-bold mb-1 badge bg-dark">{{ review.first_name }} {{ review.last_name }}</span></h5>
                           <div class="d-flex align-items-center mb-3">
                             <p class="mb-0">
                               {{ review.date }}
@@ -163,6 +163,8 @@
                             </p>
                             {% if request.user.id == review.user.id %}
                             <a href="{% url 'edit_review' review.id %}#review" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                            <a href="#" class="link-muted"
+                            data-bs-toggle="modal" data-bs-target="#modal-{{ review.id }}"><i class="fas fa-xmark ms-2"></i></a>
                             {% endif %}
                           </div>
                           <p class="mb-0">
@@ -170,10 +172,59 @@
                           </p>
                         </div>
                       </div>
+
                       <hr class="p-2" />
+
+                      
                       {% endfor %}
+                      <div class="pagination text-end">
+                        <span class="step-links">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1#reviews">&laquo; first</a>
+                                <a href="?page={{ page_obj.previous_page_number }}#reviews">previous</a>
+                            {% endif %}
+                    
+                            <span class="current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+                    
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}#reviews">next</a>
+                                <a href="?page={{ page_obj.paginator.num_pages }}#reviews">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
                     </div>
                   </div>
+                  {% if current_review %}
+                  <!-- Modal -->
+                  <div class="modal fade text-black" id="modal-{{ current_review.id }}" tabindex="-1"
+                  aria-labelledby="modal-{{ current_review.id }}" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title">Are you sure you want to delete
+                                  your Review?</h5>
+                              <!-- Button to close modal dialog -->
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              Your review will be permanently removed.
+                          </div>
+                          <div class="modal-footer">
+                              <!-- Back button to close modal dialog -->
+                              <button type="button" class="btn btn-secondary"
+                                  data-bs-dismiss="modal">Back</button>
+                              <!-- Delete button passing message id to view -->
+                              <a class="btn btn-danger" role='button'
+                                  href="{% url 'delete_review' current_review.id %}#review">Confirm Deletion
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              {% endif %}
 
                   {% if user.is_authenticated %}
                   {% if not current_review %}
@@ -213,6 +264,5 @@
             </div>
 
 </div>
-
 
 {% endblock %}

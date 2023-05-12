@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db.models import Case, When
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
 
 def index(request):
     """ Simple route to return the Index template """
@@ -30,10 +31,19 @@ def index(request):
                 is_approved=False)
         reviews = review_concat.order_by(Case(When(
             user_id=request.user.id, then=0), default=1))
+
+        paginator = Paginator(reviews, 2)
+
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
     # If no current user review exists then define review object excluding
     # is_approved boolean
     else:
         reviews = Review.objects.exclude(is_approved=False)
+        paginator = Paginator(reviews, 2)
+
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
 
     if request.method == 'GET':
         
@@ -50,15 +60,21 @@ def index(request):
             messages.error(request, f'You already submitted a review')
         else:
             if form.is_valid():
-                form.save()
+                bleh = form.save()
+                if bleh.appear_anonymous:
+                    bleh.first_name = 'Anonymous'
+                    bleh.last_name = 'User'
+                    bleh.save()
+                else:
+                    form.save()
                 messages.success(request, 'Review Added - Pending Approval')
                 return redirect(reverse('home'))
         
     context = {
             'products': products,
-            'reviews': reviews,
             'form': form,
             'current_review': current_review,
+            'page_obj': page_obj,
         }
 
     return render(request, 'home/index.html', context)
@@ -80,10 +96,18 @@ def edit_review(request, review_id):
                 is_approved=False)
         reviews = review_concat.order_by(Case(When(
             user_id=request.user.id, then=0), default=1))
+        paginator = Paginator(reviews, 2)
+
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
     # If no current user review exists then define review object excluding
     # is_approved boolean
     else:
         reviews = Review.objects.exclude(is_approved=False)
+        paginator = Paginator(reviews, 2)
+
+        page_number = request.GET.get("page")
+        page_obj = paginator.get_page(page_number)
 
     if request.method == 'POST':
         form = ReviewForm(request.POST, instance=review)
@@ -102,8 +126,19 @@ def edit_review(request, review_id):
     context = {
         'form': form,
         'review': review,
-        'reviews': reviews,
+        'page_obj': page_obj,
         'products': products,
     }
 
     return render(request, template, context)
+
+
+# Require session decorator from django decorators.
+@login_required()
+def delete_review(request, review_id):
+
+    review = get_object_or_404(Review, pk=review_id)
+    review.delete()
+    messages.success(request, 'Deletion successful - Review Removed')
+
+    return redirect(reverse('home'))

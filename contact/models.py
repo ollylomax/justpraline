@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from products.models import Product
 
 # Subjects tuple for subject choices field.
 SUBJECTS = (
@@ -39,3 +40,16 @@ class Review(models.Model):
     appear_anonymous = models.BooleanField(null=False, blank=False, default=False)
     is_approved = models.BooleanField(null=False, blank=False, default=False)
     review = models.TextField(max_length=200, null=False, blank=False)
+
+
+class ProductReview(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=False, blank=False)
+    product = models.ForeignKey(
+        Product, null=False, blank=False, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=80, null=True, blank=True)
+    last_name = models.CharField(max_length=80, null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    appear_anonymous = models.BooleanField(null=False, blank=False, default=False)
+    is_approved = models.BooleanField(null=False, blank=False, default=False)
+    product_review = models.TextField(max_length=500, null=False, blank=False)

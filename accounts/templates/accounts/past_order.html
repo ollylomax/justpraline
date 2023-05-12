@@ -31,13 +31,14 @@
             <hr>
             <h2 style="overflow-wrap: break-word;">Past Order: {{ order.order_number }}</h2>
             <hr>
-            <p class="text-center">Order was made on <strong>{{ order.date }}</strong> and a confirmation Email was sent
-                to <strong>{{ order.email }}</strong></p>
         </div>
     </div>
-    <!-- Order block -->
-    <div class="row justify-content-center">
-        <div class="col-10 col-offset-1">
+    <div class="row justify-content-center px-3">
+        <div class="col-10 col-offset-1 bg-white rounded border border-dark py-3">
+            
+            <p class="text-center">Order was made on <strong>{{ order.date }}</strong> and a confirmation Email was sent
+                to <strong>{{ order.email }}</strong></p>
+            <!-- Order block -->
             <div class="order-confirmation-wrapper p-2 border">
                 <div class="row">
                     <div class="col">
@@ -65,7 +66,7 @@
 
                 <div class="row mt-2">
                     <div class="col">
-                        <small class="text-muted">Printed Matter</small>
+                        <small class="text-muted">Products</small>
                     </div>
                 </div>
                 <!-- Iterate through lineitems -->
@@ -77,7 +78,7 @@
                         </p>
                     </div>
                     <div class="col-12 col-md-8 text-md-right">
-                        <p class="small mb-0">{{ item.quantity }}x £{{ item.product.price }} per printed unit</p>
+                        <p class="small mb-0">{{ item.quantity }}x £{{ item.product.price }} per box</p>
                     </div>
                 </div>
                 {% endfor %}
@@ -201,6 +202,7 @@
             </div>
         </div>
     </div>
+
     <!-- Button block -->
     <div class="row justify-content-center">
         <div class="col-10 col-offset-1">

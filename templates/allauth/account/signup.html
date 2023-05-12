@@ -15,11 +15,13 @@
 
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
-{% block inner %}
+{% block title %}
 <hr>
 <h2>{% trans "Sign Up" %}</h2>
 <hr>
+{% endblock %}
 
+{% block inner %}
 <!-- Form with POST directing to account signup view -->
 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
   <!-- Django csrf token -->

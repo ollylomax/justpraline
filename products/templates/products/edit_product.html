@@ -29,8 +29,8 @@
             </div>
         </div>
         <!-- Form block -->
-        <div class="row justify-content-center">
-            <div class="col-10 col-offset-1">
+        <div class="row justify-content-center mx-1">
+            <div class="col-10 col-offset-1 bg-white rounded border border-dark py-3">
                 <form method="POST" action="{% url 'edit_product' product.id %}" class="form mb-2" enctype="multipart/form-data">
                     <!-- Django csrf token -->
                     {% csrf_token %}

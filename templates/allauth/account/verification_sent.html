@@ -15,11 +15,13 @@
 
 {% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
 
-{% block inner %}
+{% block title %}
     <hr>
     <h2>{% trans "Verify Your Email" %}</h2>
     <hr>
+{% endblock %}
 
+{% block inner %}
     <p>{% blocktrans %}An email has been sent to you with instructions on whow to complete the sign up process.{% endblocktrans %}</p>
     <p>If you do not receive it within a few minutes, please <a href="{% url 'contact' %}">contact</a> us.</p>
     <!-- Home button which directs to home page -->

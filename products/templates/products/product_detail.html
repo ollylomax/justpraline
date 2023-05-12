@@ -20,11 +20,18 @@
 <!-- Background image overlay -->
 <div class="overlay"></div>
 <div class="container container-fluid">
-    <hr>
-    <!-- Page title -->
-    <h2 class="text-center">{{ product }}</h2>
-    <hr>
-    <div class="row bg-light mx-3 rounded border border-dark">
+    <div class="row justify-content-center">
+        <div class="col-10 col-offset-1">
+            <hr>
+            <!-- Page title -->
+            <h2 class="text-center">{{ product }}</h2>
+            
+            <hr>
+        </div>
+    </div>
+    <div class="row justify-content-center mx-1">
+        <div class="col-10 col-offset-1 bg-white rounded border border-dark py-3">
+    <div class="row">
         <!-- Product image block -->
         <div class="col-12 col-md-6 col-lg-4 offset-lg-2">
             <div class="image-container my-5">
@@ -57,10 +64,17 @@
                     </button>
                 </small>
                 {% endif %}
+                <p>{% if product.is_new %}
+                    <span class="badge bg-success">NEW PRODUCT</span>
+                    {% endif %}</p>
                 <h3 class="mb-0">{{ product.name }}</h3>
-                <p class="mb-0">{{ product.type }}</p>
                 <p class="lead mb-0 text-left font-weight-bold">£{{ product.price }} per Box of 10 Pralines</p>
+                <div class="edition {{ product.edition|lower|cut:' ' }}">{{ product.edition }}</div>
+                <p class="mt-3" style="overflow-wrap: break-word;">{{ product.edition.description }}</p>
                 <p class="mt-3" style="overflow-wrap: break-word;">{{ product.description }}</p>
+                <p>{% for tag in product.tags.all %}
+                    <span class="badge text-bg-dark">{{ tag }}</span>
+                    {% endfor %}</li></p>
                 <a class="mt-2 btn w-100" data-bs-toggle="collapse" href="#ingredients" role="button" aria-expanded="false" aria-controls="ingredients">
                     <div class="row"><div class="col-10">Ingredients</div> <div class="col-2"><i class="fa-solid fa-square-caret-down"></i></div>
                 </div></a>
@@ -140,6 +154,105 @@
             </div>
         </div>
     </div>
+    </div>
+    </div>
+
+    <div class="container my-5 py-5" id="product_reviews">
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-12 col-lg-10">
+            <div class="card text-dark">
+              <div class="card-body p-4">
+                <h4 class="mb-0">Recent Product Reviews</h4>
+                <p class="fw-light mb-4 pb-2">Latest Product Reviews section by users</p>
+    
+        {% if customer_review %}
+        <div class="d-flex flex-start">
+            <div>
+                <h5><span class="fw-bold mb-1 badge bg-dark">{{ customer_review.first_name }} {{ customer_review.last_name }}</span></h5>
+                <h6><i class="fa-regular fa-circle-check text-success"></i> Verified Purchase</h6>
+                <div class="d-flex align-items-center mb-3">
+                    <p class="mb-0">
+                        {{ customer_review.date }}
+                        {% if customer_review.is_approved == False %}
+                        <span class="badge bg-primary">Pending</span>
+                        {% else %}
+                        <span class="badge bg-success">Approved</span>
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'edit_product_review' product.id customer_review.id %}#review_form" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                    <a href="#" class="link-muted"
+                    data-bs-toggle="modal" data-bs-target="#modal-{{ customer_review.id }}"><i class="fas fa-xmark ms-2"></i></a>
+                </div>
+                <p class="mb-0">
+                {{ customer_review.product_review }}
+                </p>
+            </div>
+        </div>
+        <hr class="p-2" />
+        {% endif %}
+    
+    
+        {% for product_review in page_obj %}
+        <div class="d-flex flex-start">
+            <div>
+                <h5><span class="fw-bold mb-1 badge bg-dark">{{ product_review.first_name }} {{ product_review.last_name }}</span></h5>
+                <h6><i class="fa-regular fa-circle-check text-success"></i> Verified Purchase</h6>
+                <div class="d-flex align-items-center mb-3">
+                    <p class="mb-0">
+                        {{ product_review.date }}
+                        {% if product_review.is_approved == False %}
+                        <span class="badge bg-primary">Pending</span>
+                        {% else %}
+                        <span class="badge bg-success">Approved</span>
+                        {% endif %}
+                    </p>
+                    {% if request.user.id == product_review.user.id %}
+                    <a href="#" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                    <a href="#" class="link-muted"
+                    data-bs-toggle="modal" data-bs-target="#modal-{{ product_review.id }}"><i class="fas fa-xmark ms-2"></i></a>
+                    {% endif %}
+                </div>
+                <p class="mb-0">
+                {{ product_review.product_review }}
+                </p>
+            </div>
+        </div>
+        <hr class="p-2" />
+        {% endfor %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1#product_reviews">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}#product_reviews">previous</a>
+                {% endif %}
+        
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+        
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}#product_reviews">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}#product_reviews">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        {% if request.user.is_authenticated and not customer_review or in_edit %}
+        <form method="post" id="review_form" action="#product_reviews">
+            <!-- Django csrf token -->
+            {% csrf_token %}
+            <!-- From rendered from models as crispy form -->
+            {{ form|crispy }}
+            <div class="form-actions">
+                {% if in_edit %}
+                <button type="submit" class="btn float-end mt-2">Update</button>
+                {% else %}
+                <!-- Send button which submits the form -->
+                <button type="submit" class="btn float-end mt-2">Send</button>
+                {% endif %}
+            </div>
+        </form>
+        {% endif %}
+
 </div>
 
 <!-- Modal -->
@@ -165,6 +278,45 @@
         </div>
     </div>
 </div>
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+</div>
+
+{% if customer_review %}
+<!-- Modal -->
+                  <div class="modal fade text-black" id="modal-{{ customer_review.id }}" tabindex="-1"
+                  aria-labelledby="modal-{{ customer_review.id }}" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title">Are you sure you want to delete
+                                  your Review?</h5>
+                              <!-- Button to close modal dialog -->
+                              <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                  aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              Your review will be permanently removed.
+                          </div>
+                          <div class="modal-footer">
+                              <!-- Back button to close modal dialog -->
+                              <button type="button" class="btn btn-secondary"
+                                  data-bs-dismiss="modal">Back</button>
+                              <!-- Delete button passing message id to view -->
+                              <a class="btn btn-danger" role='button'
+                                  href="{% url 'delete_product_review' product.id customer_review.id %}#product_reviews">Confirm Deletion
+                              </a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              {% endif %}
 {% endblock %}
 
 <!-- Custom javascript injection -->

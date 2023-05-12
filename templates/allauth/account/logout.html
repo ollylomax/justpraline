@@ -15,11 +15,13 @@
 
 {% block head_title %}{% trans "Sign Out" %}{% endblock %}
 
-{% block inner %}
+{% block title %}
 <hr>
 <h2>{% trans "Sign Out" %}</h2>
 <hr>
+{% endblock %}
 
+{% block inner %}
 <p>{% trans 'Are you sure you want to sign out?' %}</p>
 <!-- Form with POST directing to account logout view -->
 <form method="post" action="{% url 'account_logout' %}">

@@ -2,12 +2,13 @@
 
 table {
     margin: 0 auto !important;
+    background-color: #ffffff;
 }
 
 .messages thead > tr,
 .orders thead > tr,
 .artwork thead > tr {
-    background-color: #001087;
+    background-color: #874c00;
     border: 1px solid black;
     color: #fff;
 }
@@ -21,7 +22,7 @@ table {
 .messages tbody > tr:hover,
 .orders tbody > tr:hover,
 .artwork tbody > tr:hover {
-    background-color: #6489fa;
+    background-color: #fab164;
     border: 1px solid black;
     color: #fff;
 }

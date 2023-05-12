@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Messages, Review
+from .models import Messages, Review, ProductReview
 
 
 class MessagesAdmin(admin.ModelAdmin):
@@ -34,5 +34,22 @@ class ReviewAdmin(admin.ModelAdmin):
         )
 
 
+class ProductReviewAdmin(admin.ModelAdmin):
+
+    readonly_fields = ('date',)
+
+    fields = (
+        'user', 'product', 'date', 'first_name',
+        'last_name', 'is_approved', 'appear_anonymous',
+        'product_review',
+        )
+
+    list_display = (
+        'user', 'product', 'date', 'first_name',
+        'last_name', 'is_approved', 'appear_anonymous',
+        )
+
+
 admin.site.register(Messages, MessagesAdmin)
 admin.site.register(Review, ReviewAdmin)
+admin.site.register(ProductReview, ProductReviewAdmin)
