@@ -28,13 +28,13 @@ class main_handler:
             {'order': order})
         body = render_to_string(
             'checkout/order_confirmation_email/order_confirmation_body.txt',
-            {'order': order, 'vp_email': settings.VENTURE_PRESS_EMAIL})
+            {'order': order, 'jp_email': settings.JP_EMAIL})
         # Takes four parameters, email subject, email body, from
         #   email and to email.
         send_mail(
             subject,
             body,
-            settings.VENTURE_PRESS_EMAIL,
+            settings.JP_EMAIL,
             [order.email]
         )
 

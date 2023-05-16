@@ -1,6 +1,6 @@
 Hi {{ order.full_name }},
 
-A big thank you for your order from Venture Press!
+A big thank you for your order from Just Praline!
 
 Your order has been received and the details are attached below:-
 
@@ -24,8 +24,8 @@ If there are any problems with your order we will contact you on {{ order.phone_
 
 Please feel free to contact us at {{ vp_email }} if you have any questions.
 
-Thank you for your custom on behalf of all here at Venture Press!
+Thank you for your custom on behalf of all here at Just Praline!
 
 Kind regards
 
-Venture Press Team
+Just Praline Team

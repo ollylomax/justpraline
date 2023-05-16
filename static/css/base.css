@@ -18,6 +18,10 @@ p {
     word-break: break-word;
 }
 
+a {
+    color:#fab164;
+}
+
 .overlay {
     height: 100%;
     width: 100%;
@@ -36,21 +40,40 @@ header {
     border-bottom: 10px solid black;
 }
 
+.praline-bg {
+    background: url('/media/praline.jpg') no-repeat center center;
+    background-size: cover;
+    border: 1px solid black;
+    height: 5rem;
+}
+
+.title-bg {
+    background: url('/media/title-bg.jpg') no-repeat center center;
+    background-size: cover;
+    border: 1px solid black;
+    height:400px;
+}
+
 .container {
-    padding: 100px 0 150px;
+    padding: 170px 0 150px;
 }
 
 .logo {
-    margin-right: 1rem;
     margin-top: 0.5rem;
     height: 100px;
 }
 
 /* Navigation */
 
-.navbar {
-    background-color: #874c00 !important;
+.logonav {
     height: 100px;
+    background-color: #ffffff;
+    padding: 0 20px;
+}
+
+.menunav {
+    background-color: #874c00 !important;
+    height: 70px;
     padding: 0 20px;
 }
 
@@ -69,6 +92,10 @@ header {
 
 .nav-link {
     padding: 0 8px;
+}
+
+.menunav .nav-item {
+    width: 10rem;
 }
 
 /* .custom-icons {
@@ -110,6 +137,11 @@ header {
 
 h1,
 h2 {
+    font-weight: 600;
+    padding: 1rem;
+}
+
+.block-header {
     font-weight: 600;
     text-align: center;
     color: #fff;
@@ -208,6 +240,23 @@ td {
     background-color: #fab164;
 }
 
+/* Forms */
+
+.form-group {
+    padding: 0.2rem 0;
+}
+
+.form-control {
+  min-height: 40px;
+  border-radius: 0px;
+  border: 1px solid #000;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.1rem #fab164;
+}
+
+
 /* Footer */
 
 footer {
@@ -221,11 +270,12 @@ footer {
 .cart {
     display: block;
     position: fixed;
-    top: 82px;
+    top: 170px;
     right: 0px;
-    z-index: 999;
+    z-index: 1050;
     background-color: #874c00 !important;
     overflow: visible;
+    border: 0.1rem solid black;
 }
 
 .cart-inner {
@@ -458,7 +508,7 @@ td {
     /* Major */
 
     .container {
-        padding: 100px 0;
+        padding: 170px 0;
     }
 
     /* Mobile Nav */

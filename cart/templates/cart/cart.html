@@ -27,7 +27,7 @@
     <div class="row justify-content-center">
         <div class="col-10 col-offset-1">
             <hr>
-            <h2>Your Cart</h2>
+            <h2 class="block-header">Your Cart</h2>
             <hr>
         </div>
     </div>
@@ -118,6 +118,7 @@
                     </tr>
                     {% endfor %}
                 </table>
+                <hr>
                 <!-- Cart totals content -->
                 <div class="float-end">
                     <div class="text-end">
@@ -126,7 +127,7 @@
                         <!-- Rounding to two decimal places -->
                         <h6>Delivery: £{{ delivery|floatformat:2 }}</h6>
                         <!-- Rounding to two decimal places -->
-                        <h4 class="mt-4"><strong>Amount Due: £{{ grand_total|floatformat:2 }}</strong></h4>
+                        <h4 class="mt-4"><strong>Order Total: £{{ grand_total|floatformat:2 }}</strong></h4>
                         <!-- Check if free delivery requirements are matched -->
                         {% if delivery_dearth > 0 %}
                         <p class="mb-1">

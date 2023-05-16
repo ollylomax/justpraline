@@ -209,7 +209,7 @@ ENDPOINT_SECRET = os.getenv('ENDPOINT_SECRET', '')
 
 if 'DEVELOPMENT' in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    VENTURE_PRESS_EMAIL = 'info@venturepress.com'
+    JP_EMAIL = 'info@justpraline.com'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_USE_TLS = True
@@ -217,7 +217,7 @@ else:
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASS')
-    VENTURE_PRESS_EMAIL = os.environ.get('EMAIL_HOST_USER')
+    JP_EMAIL = os.environ.get('EMAIL_HOST_USER')
 
 # AWS S3
 

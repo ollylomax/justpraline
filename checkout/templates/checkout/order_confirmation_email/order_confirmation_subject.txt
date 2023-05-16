@@ -1,1 +1,1 @@
-Venture Press Order Confirmation for Order: {{ order.order_number }}
+Just Praline Order Confirmation for Order: {{ order.order_number }}

@@ -63,11 +63,66 @@
 <body>
     <header class="container-fluid fixed-top">
 
-        <nav class="navbar navbar-expand-lg bg-light">
+        <nav class="navbar logonav navbar-expand-lg bg-light justify-content-evenly">
             <div class="container-fluid">
+                <div class="w-25">
+                <form method="GET" action="{% url 'products' %}">
+                    <div class="input-group w-100 nav-index">
+                        <!-- Search input field with placeholder -->
+                        <input class="search-input form-control border border-black rounded-0" type="text"
+                            name="query" placeholder="Search" aria-label="Search Box">
+                        <div class="input-group-append">
+                            <!-- Search button which submits the form -->
+                            <button class="form-control btn btn-black border border-black rounded-0"
+                                type="submit" aria-label="Search Button">
+                                <span class="icon text-white">
+                                    <i class="fas fa-search"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
                 <!-- Logo and Logo text -->
+                <div class="w-50 text-center">
                 <a class="text-white navbar-brand mt-1" href="{% url 'home' %}"><img class="logo"
                         src="{{ MEDIA_URL}}jp.png" alt="Just Praline Logo"></a>
+                    </div>
+                <!-- Mobile burger toggler -->
+                <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="w-25">
+                <div class="collapse navbar-collapse justify-content-end bg-light" id="navbarNavDropdown">
+                    <!-- Cart link and icon -->
+                    <div class="nav-item">
+                        <!-- Cart button directing to cart view and targetted by custom javascript to initiate mini cart -->
+                        <a class="cart-trigger {% if grand_total %}text-info font-weight-bold{% else %}text-black{% endif %} nav-link"
+                            href="{% url 'cart' %}">
+                            <div class="text-center text-black">
+                                <div><i class="fa-solid fa-cart-flatbed"></i></div>
+                                <p class="my-0">
+                                    <!-- Conditional to check if grand total exists (cart has products) -->
+                                    {% if grand_total %}
+                                    <!-- Round to two decimal places -->
+                                    £{{ grand_total|floatformat:2 }}
+                                    <!-- If no grand total (nothing in cart) -->
+                                    {% else %}
+                                    £0.00
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </nav>
+
+        <nav class="navbar menunav navbar-expand-lg bg-light">
+            <div class="container-fluid justify-content-evenly">
                 <!-- Mobile burger toggler -->
                 <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
@@ -76,25 +131,6 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                        <!-- Search query form directing to products view -->
-                        <li>
-                            <form method="GET" action="{% url 'products' %}">
-                                <div class="input-group w-100 nav-index">
-                                    <!-- Search input field with placeholder -->
-                                    <input class="search-input form-control border border-black rounded-0" type="text"
-                                        name="query" placeholder="Search" aria-label="Search Box">
-                                    <div class="input-group-append">
-                                        <!-- Search button which submits the form -->
-                                        <button class="form-control btn btn-black border border-black rounded-0"
-                                            type="submit" aria-label="Search Button">
-                                            <span class="icon text-white">
-                                                <i class="fas fa-search"></i>
-                                            </span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
-                        </li>
                         <!-- Home nav link and icon -->
                         <li class="nav-item">
                             <a aria-current="page" href="{% url 'home' %}" class="d-none d-lg-block text-center text-white"><i
@@ -176,26 +212,6 @@
                         </li>
                         {% endif %}
                     </ul>
-                    <!-- Cart link and icon -->
-                    <div class="nav-item">
-                        <!-- Cart button directing to cart view and targetted by custom javascript to initiate mini cart -->
-                        <a class="cart-trigger {% if grand_total %}text-info font-weight-bold{% else %}text-black{% endif %} nav-link"
-                            href="{% url 'cart' %}">
-                            <div class="text-center text-white">
-                                <div><i class="fa-solid fa-cart-flatbed"></i></div>
-                                <p class="my-0">
-                                    <!-- Conditional to check if grand total exists (cart has products) -->
-                                    {% if grand_total %}
-                                    <!-- Round to two decimal places -->
-                                    £{{ grand_total|floatformat:2 }}
-                                    <!-- If no grand total (nothing in cart) -->
-                                    {% else %}
-                                    £0.00
-                                    {% endif %}
-                                </p>
-                            </div>
-                        </a>
-                    </div>
                 </div>
             </div>
         </nav>

@@ -24,13 +24,13 @@
         <div class="row justify-content-center">
             <div class="col-10 col-offset-1">
                 <hr>
-                <h2>Edit Product</h2>
+                <h2 class="block-header">Edit Product</h2>
                 <hr>
             </div>
         </div>
         <!-- Form block -->
         <div class="row justify-content-center mx-1">
-            <div class="col-10 col-offset-1 bg-white rounded border border-dark py-3">
+            <div class="col-10 col-offset-1 bg-light rounded border border-dark py-3">
                 <form method="POST" action="{% url 'edit_product' product.id %}" class="form mb-2" enctype="multipart/form-data">
                     <!-- Django csrf token -->
                     {% csrf_token %}
