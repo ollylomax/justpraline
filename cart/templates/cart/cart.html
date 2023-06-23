@@ -92,7 +92,7 @@
                                         <!-- Read only quantity input field with +/- steps of 10 and max input of 100000 -->
                                         <input class="form-control form-control-sm qty_input text-center"
                                             style="max-width: 95px;" type="number" name="quantity"
-                                            value="{{ item.quantity }}" min="10" max="100000" readonly
+                                            value="{{ item.quantity }}" min="1" max="10" readonly
                                             data-item_id="{{ item.item_id }}" id="id_qty_{{ item.item_id }}">
                                         <div class="input-group-append">
                                             <!-- Button to increment quantity in steps of 10 -->
@@ -124,8 +124,12 @@
                     <div class="text-end">
                         <!-- Rounding to two decimal places -->
                         <h6><strong>Cart Total: £{{ total|floatformat:2 }}</strong></h6>
+                        {% if delivery %}
                         <!-- Rounding to two decimal places -->
                         <h6>Delivery: £{{ delivery|floatformat:2 }}</h6>
+                        {% else %}
+                        <h6>FREE DELIVERY</h6>
+                        {% endif %}
                         <!-- Rounding to two decimal places -->
                         <h4 class="mt-4"><strong>Order Total: £{{ grand_total|floatformat:2 }}</strong></h4>
                         <!-- Check if free delivery requirements are matched -->

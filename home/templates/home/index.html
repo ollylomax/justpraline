@@ -8,12 +8,13 @@
 
 <!-- Page header -->
 {% block content %}
+<div class="home-overlay"></div>
 <div class="hero container h-100 mt-5">
     <div class="row h-100">
         <div class="col-12 my-auto">
             <div class="hero-wrapper">
                 <!-- Hero image heading -->
-                <h1 class="display-4 title-bg"></h1>
+                <img src="/media/title-bg.jpg" class = "img-fluid" alt="">
                 <h1>Nuts about Praline!</h1>
                 <!-- Hero image text -->
                 <p class="p-3">Try out delicious treats made using the highest quality ingredients and our entire range is gluten-free, making them suitable for people with gluten allergies or sensitivities. These pralines have a low carbon footprint, making them a great choice for people who are concerned about the environment. So if you're looking for a delicious and guilt-free treat, check out our range!</p>
@@ -54,10 +55,10 @@
     </div>
     </div>
      <!-- Products block -->
-     <div class="row justify-content-center">
+     <div class="row justify-content-center p-2">
         <!-- Iterate through products -->
         {% for product in products %}
-        <div class="card-group col-sm-12 col-md-6 col-lg-4">
+        <div class="card-group products col-sm-12 col-md-6 col-lg-4">
             <!-- Bootstrap card directing to product detail page passing the product id -->
             <div class="card">
                 <div class="card-header tags p-3">
@@ -137,128 +138,129 @@
         {% endfor %}
 
             
-            <div class="container my-5 py-5">
-              <div class="row d-flex justify-content-center">
-                <div class="col-md-12 col-lg-10">
-                  <div class="card text-dark">
-                    <div class="card-body p-4">
-                      <h4 class="mb-0">Recent comments</h4>
-                      <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
-                        
-                      {% for review in page_obj %}
-                      
-                      <div class="d-flex flex-start" id="reviews">
-                       
-                        <div>
-                          <h5><span class="fw-bold mb-1 badge bg-dark">{{ review.first_name }} {{ review.last_name }}</span></h5>
-                          <div class="d-flex align-items-center mb-3">
-                            <p class="mb-0">
-                              {{ review.date }}
-                              {% if review.is_approved == False %}
-                              <span class="badge bg-primary">Pending</span>
-                              {% else %}
-                              <span class="badge bg-success">Approved</span>
-                              {% endif %}
-                            </p>
-                            {% if request.user.id == review.user.id %}
-                            <a href="{% url 'edit_review' review.id %}#review" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
-                            <a href="#" class="link-muted"
-                            data-bs-toggle="modal" data-bs-target="#modal-{{ review.id }}"><i class="fas fa-xmark ms-2"></i></a>
-                            {% endif %}
-                          </div>
-                          <p class="mb-0">
-                            {{ review.review }}
-                          </p>
-                        </div>
-                      </div>
-
-                      <hr class="p-2" />
-
-                      
-                      {% endfor %}
-                      <div class="pagination text-end">
-                        <span class="step-links">
-                            {% if page_obj.has_previous %}
-                                <a href="?page=1#reviews">&laquo; first</a>
-                                <a href="?page={{ page_obj.previous_page_number }}#reviews">previous</a>
-                            {% endif %}
-                    
-                            <span class="current">
-                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                            </span>
-                    
-                            {% if page_obj.has_next %}
-                                <a href="?page={{ page_obj.next_page_number }}#reviews">next</a>
-                                <a href="?page={{ page_obj.paginator.num_pages }}#reviews">last &raquo;</a>
-                            {% endif %}
-                        </span>
-                    </div>
-                    </div>
-                  </div>
-                  {% if current_review %}
-                  <!-- Modal -->
-                  <div class="modal fade text-black" id="modal-{{ current_review.id }}" tabindex="-1"
-                  aria-labelledby="modal-{{ current_review.id }}" aria-hidden="true">
-                  <div class="modal-dialog">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                              <h5 class="modal-title">Are you sure you want to delete
-                                  your Review?</h5>
-                              <!-- Button to close modal dialog -->
-                              <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                  aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                              Your review will be permanently removed.
-                          </div>
-                          <div class="modal-footer">
-                              <!-- Back button to close modal dialog -->
-                              <button type="button" class="btn btn-secondary"
-                                  data-bs-dismiss="modal">Back</button>
-                              <!-- Delete button passing message id to view -->
-                              <a class="btn btn-danger" role='button'
-                                  href="{% url 'delete_review' current_review.id %}#review">Confirm Deletion
-                              </a>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              {% endif %}
-
-                  {% if user.is_authenticated %}
-                  {% if not current_review %}
-                  
-                  
-                  <div class="container my-5 py-5" id="review">
-                    <div class="card text-dark">
-                        <div class="card-body p-4">
-                            <h4 class="mb-0">Review Just Praline</h4>
-                      <p class="fw-light mb-4 pb-2">Please be responsible with your language, reviews are screened.</p>
-                      {% if review %}
-                    <form method="post" action="{% url 'edit_review' review.id %}#reviews">
-                     {% else %}
-                     <form method="post" action="{% url 'home' %}#reviews">
-                        {% endif %}
-                    <!-- Django csrf token -->
-                    {% csrf_token %}
-                    <!-- From rendered from models as crispy form -->
-                    {{ form|crispy }}
-                    <div class="form-actions">
-                        <!-- Send button which submits the form -->
-                        
-                        {% if review %}
-                        <button type="submit" class="btn float-end mt-2">Update</button>
-                        {% else %}
-                        <button type="submit" class="btn float-end mt-2">Send</button>
-                        {% endif %}
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    {% endif %}
+            
                 </div>
+                
+                    <div class="row d-flex justify-content-center">
+                      <div class="col-12">
+                        <div class="card text-dark m-3">
+                          <div class="card-body p-4">
+                            <h4 class="mb-0">Recent comments</h4>
+                            <p class="fw-light mb-4 pb-2">Latest Comments section by users</p>
+                              
+                            {% for review in page_obj %}
+                            
+                            <div class="d-flex flex-start" id="reviews">
+                             
+                              <div>
+                                <h5><span class="fw-bold mb-1 badge bg-dark">{{ review.first_name }} {{ review.last_name }}</span></h5>
+                                <h6><i class="fa-regular fa-circle-check text-success"></i> Verified Buyer</h6>
+                                <div class="d-flex align-items-center mb-3">
+                                  <p class="mb-0">
+                                    {{ review.date }}
+                                    {% if review.is_approved == False %}
+                                    <span class="badge bg-primary">Pending</span>
+                                    {% else %}
+                                    <span class="badge bg-success">Approved</span>
+                                    {% endif %}
+                                  </p>
+                                  {% if request.user.id == review.user.id %}
+                                  <a href="{% url 'edit_review' review.id %}#review" class="link-muted"><i class="fas fa-pencil-alt ms-2"></i></a>
+                                  <a href="#" class="link-muted"
+                                  data-bs-toggle="modal" data-bs-target="#modal-{{ review.id }}"><i class="fas fa-xmark ms-2"></i></a>
+                                  {% endif %}
+                                </div>
+                                <p class="mb-0">
+                                  {{ review.review }}
+                                </p>
+                              </div>
+                            </div>
+      
+                            <hr class="p-2" />
+      
+                            
+                            {% endfor %}
+                            <div class="pagination text-end">
+                              <span class="step-links">
+                                  {% if page_obj.has_previous %}
+                                      <a href="?page=1#reviews">&laquo; first</a>
+                                      <a href="?page={{ page_obj.previous_page_number }}#reviews">previous</a>
+                                  {% endif %}
+                          
+                                  <span class="current">
+                                      Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                  </span>
+                          
+                                  {% if page_obj.has_next %}
+                                      <a href="?page={{ page_obj.next_page_number }}#reviews">next</a>
+                                      <a href="?page={{ page_obj.paginator.num_pages }}#reviews">last &raquo;</a>
+                                  {% endif %}
+                              </span>
+                          </div>
+                          </div>
+                        </div>
+                        {% if current_review %}
+                        <!-- Modal -->
+                        <div class="modal fade text-black" id="modal-{{ current_review.id }}" tabindex="-1"
+                        aria-labelledby="modal-{{ current_review.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Are you sure you want to delete
+                                        your Review?</h5>
+                                    <!-- Button to close modal dialog -->
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Your review will be permanently removed.
+                                </div>
+                                <div class="modal-footer">
+                                    <!-- Back button to close modal dialog -->
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Back</button>
+                                    <!-- Delete button passing message id to view -->
+                                    <a class="btn btn-danger" role='button'
+                                        href="{% url 'delete_review' current_review.id %}#review">Confirm Deletion
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+      
+                        {% if user.is_authenticated %}
+                        {% if not current_review %}
+                        
+                        
+                        <div class="container my-5 py-5" id="review">
+                          <div class="card text-dark">
+                              <div class="card-body p-4">
+                                  <h4 class="mb-0">Review Just Praline</h4>
+                            <p class="fw-light mb-4 pb-2">Please be responsible with your language, reviews are screened.</p>
+                            {% if review %}
+                          <form method="post" action="{% url 'edit_review' review.id %}#reviews">
+                           {% else %}
+                           <form method="post" action="{% url 'home' %}#reviews">
+                              {% endif %}
+                          <!-- Django csrf token -->
+                          {% csrf_token %}
+                          <!-- From rendered from models as crispy form -->
+                          {{ form|crispy }}
+                          <div class="form-actions">
+                              <!-- Send button which submits the form -->
+                              
+                              {% if review %}
+                              <button type="submit" class="btn float-end mt-2">Update</button>
+                              {% else %}
+                              <button type="submit" class="btn float-end mt-2">Send</button>
+                              {% endif %}
+                          </div>
+                      </form>
+                  </div>
+          </div>
+          {% endif %}
+          {% endif %}
               </div>
             </div>
 

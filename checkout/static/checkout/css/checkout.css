@@ -41,18 +41,25 @@
 /* Card processing page */
 
 #card-processing {
-	display: none;
+    display: none;
 	position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: #6489fa;
+    background: #000000;
     z-index: 999999;
+    background: url('/media/processing-overlay.jpg') no-repeat center center fixed;
+    background-size: cover;
 }
 
 #card-processing .load-text {
 	font-size: 0.5em;
+}
+
+.icon-loader img {
+    height: 150px;
+    margin-left: 1rem;
 }
 
 .icon-loader {

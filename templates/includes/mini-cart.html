@@ -5,7 +5,11 @@
         <i class="fa-solid fa-angle-down text-white align-top"></i>
     </div>
     <div class="cart-inner">
+        {% if product_count is 1 %}
+        <p class="text-white py-1"><strong>Cart</strong> ({{ product_count }} box)</p>
+        {% else %}
         <p class="text-white py-1"><strong>Cart</strong> ({{ product_count }} boxes)</p>
+        {% endif %}
         <div>
             <!-- Iterate over caer items -->
             {% for item in cart_items %}
@@ -28,7 +32,11 @@
                     {% endif %}
                     <div class="col-9">
                         <p class="my-0 text-white"><strong>{{ item.product.name }}</strong></p>
-                        <p class="my-0 small text-white">Qty: {{ item.quantity }}</p>
+                        {% if item.quantity is 1 %}
+                        <p class="my-0 small text-white">{{ item.quantity }} Box</p>
+                        {% else %}
+                        <p class="my-0 small text-white">{{ item.quantity }} Boxes</p>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
@@ -54,7 +62,7 @@
                         <!-- View Cart button directing to cart view -->
                         <a href="{% url 'cart' %}" class="btn mt-2">
                             <span class="icon">
-                                <i class="fa-solid fa-cart-flatbed"></i>
+                                <i class="fa-solid fa-basket-shopping"></i>
                             </span>
                             <span>View Cart</span>
                         </a>

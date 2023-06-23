@@ -39,7 +39,11 @@
     <div class="row bg-light border border-dark rounded mx-1 py-3">
         <!-- Order Summary block -->
         <div class="col-12 col-lg-6 order-lg-last mb-5">
-            <p class="text-muted">Order Summary (<strong>{{ product_count }}</strong> box)</p>
+            {% if product_count is 1 %}
+            <p class="text-muted">Order Summary (<strong>{{ product_count }}</strong> Box)</p>
+            {% else %}
+            <p class="text-muted">Order Summary (<strong>{{ product_count }}</strong> Boxes)</p>
+            {% endif %}
             <div class="row">
                 <div class="col-7 offset-2">
                     <p class="mb-1 mt-0 small text-muted">Item</p>
@@ -85,8 +89,12 @@
                 <div class="col-3">
                     <!-- Rounding to two decimal places -->
                     <p class="my-0">£{{ total | floatformat:2 }}</p>
+                    {% if delivery %}
                     <!-- Rounding to two decimal places -->
                     <p class="my-0">£{{ delivery | floatformat:2 }}</p>
+                    {% else %}
+                    <p class="my-0">FREE</p>
+                    {% endif %}
                     <!-- Rounding to two decimal places -->
                     <p class="my-0"><strong>£{{ grand_total | floatformat:2 }}</strong></p>
                 </div>
@@ -175,13 +183,17 @@
 
 <!-- Card processing overlay icon and text -->
 <div id="card-processing">
-    <h1 class="text-light logo-font icon-loader">
+    <h1 class="icon-loader">
+       
         <span class="icon text-center">
+            <img src="/media/jp.png" class="img-fluid" alt="">
+            <br>
             <i class="fas fa-spinner fa-spin mb-2"></i>
-            <strong class="load-text">
-                Processing...<br>
+            <br>
+            <span class="load-text">
+                Card Processing...<br>
                 Please do not close this page<br>
-            </strong>
+            </span>
         </span>
     </h1>
 </div>

@@ -9,8 +9,8 @@ html {
 body {
     color: #555;
     font-family: 'Roboto';
-    background: url('/media/nuts.png') no-repeat center center fixed;
-    background-size: cover;
+    /* background: url('/media/nuts.png') no-repeat center center fixed; */
+    /* background-size: cover; */
     height: 100vh;
 }
 
@@ -35,6 +35,24 @@ a {
     z-index: -1;
 }
 
+.home-overlay {
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background: url('/media/nuts.png') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    color: #555;
+    z-index: -1;
+}
+
+.praline-open {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    object-fit: contain;
+}
+
 header {
     padding: 0 !important;
     border-bottom: 10px solid black;
@@ -45,13 +63,6 @@ header {
     background-size: cover;
     border: 1px solid black;
     height: 5rem;
-}
-
-.title-bg {
-    background: url('/media/title-bg.jpg') no-repeat center center;
-    background-size: cover;
-    border: 1px solid black;
-    height:400px;
 }
 
 .container {
@@ -75,6 +86,34 @@ header {
     background-color: #874c00 !important;
     height: 70px;
     padding: 0 20px;
+}
+
+.menunavcontainer {
+    height: 40px;
+    background-color: #874c00 !important;
+    padding: 0;
+}
+
+.menunavtwo {
+    width: 100%;
+    padding: 0;
+}
+
+.menunavtwo > ul {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
+
+.menunavtwo > ul > li {
+    width: 25%;
+    line-height: 2.5rem;
+    padding: 0;
+    margin: 0 !important;
+}
+
+.menunavtwo > ul > li:hover {
+    background-color: #fab164;
 }
 
 .navbar-brand {
@@ -137,16 +176,17 @@ header {
 
 h1,
 h2 {
-    font-weight: 600;
+    /* font-weight: 600; */
     padding: 1rem;
+
 }
 
 .block-header {
-    font-weight: 600;
+    /* font-weight: 600; */
     text-align: center;
-    color: #fff;
-    border: 2px solid #fab164;
-    background-color: #874c00;
+    color: #874c00;
+    border: 2px solid #874c00;
+    background-color: #fab164;
     padding: 1rem 0;
 }
 
@@ -191,6 +231,11 @@ td {
 .btn:hover {
     color: #fff;
     background-color: #874c00;
+}
+
+.products .btn:hover {
+    color: #874c00;
+    background-color: #fab164;
 }
 
 .btn:focus {
@@ -250,12 +295,41 @@ td {
   min-height: 40px;
   border-radius: 0px;
   border: 1px solid #000;
+  padding-right: 12px;
 }
 
 .form-control:focus {
     box-shadow: 0 0 0 0.1rem #fab164;
 }
 
+.qty_input {
+    min-height: 0;
+}
+
+.increment-qty:active,
+.decrement-qty:active {
+    background-color: #fab164;
+}
+
+.increment-qty,
+.increment-qty:focus,
+.increment-qty:hover  {
+    border-radius: 0;
+    border: 1px solid black;
+}
+
+.decrement-qty,
+.decrement-qty:focus,
+.decrement-qty:hover {
+    border-radius: 0;
+    border: 1px solid black;
+}
+
+input[type='number']::-webkit-inner-spin-button, 
+input[type='number']::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    margin: 0;
+}
 
 /* Footer */
 
@@ -270,7 +344,7 @@ footer {
 .cart {
     display: block;
     position: fixed;
-    top: 170px;
+    top: 140px;
     right: 0px;
     z-index: 1050;
     background-color: #874c00 !important;
@@ -339,14 +413,14 @@ footer {
 
 /* Cards */
 
-.card {
+.products > .card {
     transition: all .2s ease-in-out;
     margin: 0.5rem;
     --bs-card-border-color: #874c00;
     --bs-card-border-radius: 0.5rem;
 }
 
-.card:hover {
+.products > .card:hover {
     transform: scale(1.03);
 }
 
@@ -440,12 +514,13 @@ td {
         margin: 0.5rem;
     }
 
-    .nav-item:hover {
+    /* .nav-item:hover {
         transform: scale(1.1);
-    }
+    } */
 
     .navbar .dropdown-menu {
         text-align: center;
+        width: 100%;
     }
 
     /* Cart */
@@ -514,7 +589,7 @@ td {
     /* Mobile Nav */
 
     .navbar .dropdown-menu {
-        text-align: left;
+        text-align: center;
     }
 
     .hero {

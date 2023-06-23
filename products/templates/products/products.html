@@ -19,6 +19,7 @@
 <!-- Main content block -->
 {% block content %}
 <!-- Background image overlay -->
+<div class="overlay"></div>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-12">
@@ -45,6 +46,16 @@
                 Filtered by <strong>"{{ categories.0 }}"</strong>'
                 {% endif %}
             </p>
+            {% else %}
+            <div class="row bg-white m-2 p-3 border border-dark">
+            <div class="col-12">
+                <img src="{{ MEDIA_URL }}pralines-page-img.jpg" class="praline-open img-fluid" alt="">
+                <p class="pt-3">Luxury pralines, also known as gourmet or artisanal pralines, are exquisite chocolate confections that are highly regarded for their exceptional quality, craftsmanship, and luxurious taste. These delectable treats are often made by skilled chocolatiers who use premium ingredients and employ intricate techniques to create a truly indulgent experience for chocolate enthusiasts.</p>
+                <div class="text-center"><img src="{{ MEDIA_URL }}praline-open.png" class="img-fluid"
+                    style="max-height: 200px;" alt=""></div>
+                <p>The process of making luxury pralines begins with selecting the finest ingredients. High-quality chocolate, typically dark or milk chocolate with a high cocoa content, is chosen as the base. The chocolatier carefully selects cocoa beans with distinct flavors and aromas, ensuring a rich and complex chocolate profile.</p>
+            </div>
+        </div>
             {% endif %}
         </div>
     </div>
@@ -52,7 +63,7 @@
     <div class="row justify-content-center">
         <!-- Iterate through products -->
         {% for product in products %}
-        <div class="card-group col-sm-12 col-md-6 col-lg-4">
+        <div class="card-group products col-sm-12 col-md-6 col-lg-4">
             <!-- Bootstrap card directing to product detail page passing the product id -->
             <div class="card">
                 <div class="card-header tags p-3">

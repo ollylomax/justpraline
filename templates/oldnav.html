@@ -1,0 +1,94 @@
+<nav class="navbar menunav navbar-expand-lg bg-light">
+    <div class="container-fluid justify-content-evenly">
+        <!-- Mobile burger toggler -->
+        <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <!-- Home nav link and icon -->
+                <li class="nav-item">
+                    <a aria-current="page" href="{% url 'home' %}" class="d-none d-lg-block text-center text-white"><i
+                        class="fa-solid fa-house-crack"></i></a>
+                    <!-- Home button directing to home view -->
+                    <a class="text-white nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+                </li>
+                <!-- Products nav dropdown link and icon -->
+                <li class="nav-item dropdown">
+                    <div class="d-none d-lg-block text-center text-white"><i
+                            class="dd-icon fa-solid fa-scroll"></i></div>
+                    <a class="text-white nav-link dropdown-toggle" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Our Pralines
+                    </a>
+                    <!-- Unordered list of dropdown menu choices -->
+                    <ul class="dropdown-menu text-white" aria-labelledby="Products" id="Products">
+                        <!-- Category link directing to products view with category query -->
+                        {% for category in nav_categories %}                             
+                        <li><a class="dropdown-item"
+                                href="{% url 'products' %}?category={{ category }}">{{ category }}</a></li>
+                        {% endfor %}
+                        <!-- All Products link directing to products view -->
+                        <li><a class="dropdown-item" href="{% url 'products' %}">All Pralines</a></li>
+                    </ul>
+                </li>
+                <!-- Contact nav link and icon -->
+                <li class="nav-item">
+                    <div class="d-none d-lg-block text-center text-white"><i class="fa-solid fa-marker"></i>
+                    </div>
+                    <!-- Contact button directing to contact view -->
+                    <a class="text-white nav-link" href="{% url 'contact' %}">Contact</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <!-- Conditional to check if user session exists -->
+                {% if request.user.is_authenticated %}
+                <!-- Account(username) nav dropdown link and icon -->
+                <li class="nav-item dropdown">
+                    <div class="d-none d-lg-block text-center text-white"><i
+                            class="dd-icon fa-solid fa-user"></i></div>
+                    <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ request.user }}
+                    </a>
+                    <!-- Unordered list of dropdown menu choices -->
+                    <ul class="dropdown-menu" aria-labelledby="UserProfile" id="UserProfile">
+                        <!-- Profile link directing to profile view -->
+                        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                        <!-- Order History link directing to order history view -->
+                        <li><a class="dropdown-item" href="{% url 'order_history' %}">Order History</a></li>
+                        <!-- Message Centre link directing to message centre view -->
+                        <li><a class="dropdown-item" href="{% url 'message_centre' %}">Message Centre</a></li>
+                        <!-- Conditional to check if user status is superuser -->
+                        {% if request.user.is_superuser %}
+                        <!-- Add Product link directing to add product view -->
+                        <li><a class="dropdown-item" href="{% url 'add_product' %}">Add Product</a></li>
+                        {% endif %}
+                        <!-- Change Password link directing to account change password view -->
+                        <li><a class="dropdown-item" href="{% url 'account_change_password' %}">Change
+                                Password</a></li>
+                        <!-- Logout link directing to account logout view -->
+                        <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+                    </ul>
+                </li>
+                <!-- If no user session exists -->
+                {% else %}
+                <!-- Login nav link and icon -->
+                <li class="nav-item">
+                    <div class="d-none d-lg-block text-center text-white"><i class="fa-solid fa-key"></i></div>
+                    <!-- Login button directing to account login view -->
+                    <a class="text-white nav-link" href="{% url 'account_login' %}">Login</a>
+                </li>
+                <!-- Register nav link and icon -->
+                <li class="nav-item">
+                    <div class="d-none d-lg-block text-center text-white"><i class="fa-solid fa-key"></i></div>
+                    <!-- Register link directing to account signup view -->
+                    <a class="text-white nav-link" href="{% url 'account_signup' %}">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

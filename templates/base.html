@@ -102,7 +102,7 @@
                         <a class="cart-trigger {% if grand_total %}text-info font-weight-bold{% else %}text-black{% endif %} nav-link"
                             href="{% url 'cart' %}">
                             <div class="text-center text-black">
-                                <div><i class="fa-solid fa-cart-flatbed"></i></div>
+                                <div><i class="fa-solid fa-basket-shopping"></i></div>
                                 <p class="my-0">
                                     <!-- Conditional to check if grand total exists (cart has products) -->
                                     {% if grand_total %}
@@ -121,57 +121,52 @@
             </div>
         </nav>
 
-        <nav class="navbar menunav navbar-expand-lg bg-light">
-            <div class="container-fluid justify-content-evenly">
+        <nav class="navbar navbar-expand-lg bg-light menunavcontainer">
+            <div class="container-fluid p-0" style="height: 100%;">
                 <!-- Mobile burger toggler -->
                 <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <div class="collapse navbar-collapse menunavtwo" style="height: 100%;" id="navbarNavDropdown">
                     <ul class="navbar-nav">
                         <!-- Home nav link and icon -->
                         <li class="nav-item">
-                            <a aria-current="page" href="{% url 'home' %}" class="d-none d-lg-block text-center text-white"><i
-                                class="fa-solid fa-house-crack"></i></a>
+                            <a aria-current="page" href="{% url 'home' %}" class="d-none d-lg-block text-center text-white"></a>
                             <!-- Home button directing to home view -->
                             <a class="text-white nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
                         </li>
                         <!-- Products nav dropdown link and icon -->
                         <li class="nav-item dropdown">
-                            <div class="d-none d-lg-block text-center text-white"><i
-                                    class="dd-icon fa-solid fa-scroll"></i></div>
+                            <div class="d-none d-lg-block text-center text-white"></div>
                             <a class="text-white nav-link dropdown-toggle" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                                Our Pralines
+                                Pralines
                             </a>
                             <!-- Unordered list of dropdown menu choices -->
                             <ul class="dropdown-menu text-white" aria-labelledby="Products" id="Products">
                                 <!-- Category link directing to products view with category query -->
+                                <li><a class="dropdown-item" href="{% url 'products' %}">All Pralines</a></li>
                                 {% for category in nav_categories %}                             
                                 <li><a class="dropdown-item"
                                         href="{% url 'products' %}?category={{ category }}">{{ category }}</a></li>
                                 {% endfor %}
                                 <!-- All Products link directing to products view -->
-                                <li><a class="dropdown-item" href="{% url 'products' %}">All Pralines</a></li>
                             </ul>
                         </li>
                         <!-- Contact nav link and icon -->
                         <li class="nav-item">
-                            <div class="d-none d-lg-block text-center text-white"><i class="fa-solid fa-marker"></i>
+                            <div class="d-none d-lg-block text-center text-white">
                             </div>
                             <!-- Contact button directing to contact view -->
                             <a class="text-white nav-link" href="{% url 'contact' %}">Contact</a>
                         </li>
-                    </ul>
-                    <ul class="navbar-nav">
                         <!-- Conditional to check if user session exists -->
                         {% if request.user.is_authenticated %}
                         <!-- Account(username) nav dropdown link and icon -->
                         <li class="nav-item dropdown">
-                            <div class="d-none d-lg-block text-center text-white"><i
-                                    class="dd-icon fa-solid fa-user"></i></div>
+                            <div class="d-none d-lg-block text-center text-white"></div>
                             <a class="nav-link dropdown-toggle text-white" href="#" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 {{ request.user }}
@@ -200,13 +195,13 @@
                         {% else %}
                         <!-- Login nav link and icon -->
                         <li class="nav-item">
-                            <div class="d-none d-lg-block text-center text-white"><i class="fa-solid fa-key"></i></div>
+                            <div class="d-none d-lg-block text-center text-white"></div>
                             <!-- Login button directing to account login view -->
                             <a class="text-white nav-link" href="{% url 'account_login' %}">Login</a>
                         </li>
                         <!-- Register nav link and icon -->
                         <li class="nav-item">
-                            <div class="d-none d-lg-block text-center text-white"><i class="fa-solid fa-key"></i></div>
+                            <div class="d-none d-lg-block text-center text-white"></div>
                             <!-- Register link directing to account signup view -->
                             <a class="text-white nav-link" href="{% url 'account_signup' %}">Register</a>
                         </li>

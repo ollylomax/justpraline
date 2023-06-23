@@ -27,11 +27,17 @@ def add_to_cart(request, item_id):
     cart = request.session.get('cart', {})
 
     if item_id in list(cart.keys()):
-        cart[item_id] += quantity
-        messages.success(request, f'Updated {product.name} quantity to {cart[item_id]}x')
+        if cart[item_id] + quantity > 10:
+            messages.error(request, f'You cannot buy more than 10 boxes of {product.name} in a single order')
+        else:
+            cart[item_id] += quantity
+            messages.success(request, f'Cart updated to {cart[item_id]} boxes of {product.name}')
     else:
         cart[item_id] = quantity
-        messages.success(request, f'Added {quantity}x {product.name} to your bag')
+        if quantity == 1:
+            messages.success(request, f'Added {quantity} box of {product.name} to your Cart')
+        else:
+            messages.success(request, f'Added {quantity} boxes of {product.name} to your Cart')
 
     request.session['cart'] = cart
     return redirect(path)
@@ -51,10 +57,10 @@ def quantity_amend(request, item_id):
 
     if quantity > 0:
         cart[item_id] = quantity
-        messages.success(request, f'Updated {product.name} quantity to {cart[item_id]}x')
+        messages.success(request, f'Cart updated to {cart[item_id]} boxes of {product.name}')
     else:
         cart.pop(item_id)
-        messages.success(request, f'Removed all {product.name} from your bag')
+        messages.success(request, f'Removed all boxes of {product.name} from your Cart')
 
     request.session['cart'] = cart
     return redirect(reverse('cart'))
@@ -72,7 +78,7 @@ def delete_from_cart(request, item_id):
     
     try:
         cart.pop(item_id)
-        messages.success(request, f'Removed all {product.name} from your bag')
+        messages.success(request, f'Removed all boxes of {product.name} from your Cart')
 
         request.session['cart'] = cart
         return HttpResponse(status=200)
