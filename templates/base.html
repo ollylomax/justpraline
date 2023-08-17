@@ -66,7 +66,7 @@
         <nav class="navbar logonav navbar-expand-lg bg-light justify-content-evenly">
             <div class="container-fluid">
                 <div class="w-25">
-                <form method="GET" action="{% url 'products' %}">
+                <form method="GET" action="{% url 'products' %}" class="d-none d-sm-block">
                     <div class="input-group w-100 nav-index">
                         <!-- Search input field with placeholder -->
                         <input class="search-input form-control border border-black rounded-0" type="text"
@@ -89,7 +89,7 @@
                         src="{{ MEDIA_URL}}jp.png" alt="Just Praline Logo"></a>
                     </div>
                 <!-- Mobile burger toggler -->
-                <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse"
+                <button class="navbar-toggler navbar-light" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
                     aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -124,6 +124,22 @@
         <nav class="navbar navbar-expand-lg bg-light menunavcontainer">
             <div class="container-fluid p-0" style="height: 100%;">
                 <div class="collapse navbar-collapse menunavtwo" style="height: 100%;" id="navbarNavDropdown">
+                    <form method="GET" action="{% url 'products' %}" class="d-block d-sm-none px-4 py-2">
+                        <div class="input-group w-100 nav-index">
+                            <!-- Search input field with placeholder -->
+                            <input class="search-input form-control border border-black rounded-0" type="text"
+                                name="query" placeholder="Search" aria-label="Search Box">
+                            <div class="input-group-append">
+                                <!-- Search button which submits the form -->
+                                <button class="form-control btn btn-black border border-black rounded-0"
+                                    type="submit" aria-label="Search Button">
+                                    <span class="icon text-white">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                     <ul class="navbar-nav">
                         <!-- Home nav link and icon -->
                         <li class="nav-item">
@@ -200,6 +216,28 @@
                             <a class="text-white nav-link" href="{% url 'account_signup' %}">Register</a>
                         </li>
                         {% endif %}
+                        <li class="d-block d-lg-none">
+                    <!-- Cart link and icon -->
+                    <div class="nav-item">
+                        <!-- Cart button directing to cart view and targetted by custom javascript to initiate mini cart -->
+                        <a class="cart-trigger {% if grand_total %}text-info font-weight-bold{% else %}text-black{% endif %} nav-link"
+                            href="{% url 'cart' %}">
+                            <div class="text-center text-white">
+                                <div><i class="fa-solid fa-basket-shopping"></i></div>
+                                <p class="my-0">
+                                    <!-- Conditional to check if grand total exists (cart has products) -->
+                                    {% if grand_total %}
+                                    <!-- Round to two decimal places -->
+                                    £{{ grand_total|floatformat:2 }}
+                                    <!-- If no grand total (nothing in cart) -->
+                                    {% else %}
+                                    £0.00
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </li>
                     </ul>
                 </div>
             </div>

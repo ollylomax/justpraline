@@ -66,7 +66,7 @@ header {
 }
 
 .container {
-    padding: 170px 0 150px;
+    padding: 100px 0 150px;
 }
 
 .logo {
@@ -89,7 +89,6 @@ header {
 }
 
 .menunavcontainer {
-    height: 40px;
     background-color: #874c00 !important;
     padding: 0;
 }
@@ -106,7 +105,7 @@ header {
 }
 
 .menunavtwo > ul > li {
-    width: 25%;
+    width: 100%;
     line-height: 2.5rem;
     padding: 0;
     margin: 0 !important;
@@ -164,12 +163,13 @@ header {
 
 /* Mobile Navbar */
 
+.navbar-toggler,
 .navbar-toggler:focus,
 .navbar-toggler:active,
 .navbar-toggler-icon:focus {
     outline: none;
     box-shadow: none;
-    border: 1px solid #fff;
+    border: none;
 }
 
 /* Headers */
@@ -533,6 +533,7 @@ td {
     .cart-totals-text {
         text-align: center;
     }
+
 }
 
 @media (max-width: 767px) {
@@ -621,5 +622,11 @@ td {
         bottom: 85px;
         right: 15px;
         z-index: 999;
+    }
+    .menunavcontainer {
+        height: 40px;
+    }
+    .nav-item {
+        width: 25%;
     }
 }
