@@ -47,19 +47,7 @@
                 {% endif %}
             </p>
             {% else %}
-            <div class="row bg-white m-2 p-3 border border-dark">
-            <div class="col-12">
-                <img src="{{ MEDIA_URL }}pralines-page-img.png" class="border border-dark w-100 mt-3 praline-open img-fluid" alt="">
-                <hr>
-                <p class="pt-4 px-2">Welcome to our exquisite praline range, a symphony of flavors that celebrates the natural richness and diversity of nuts. We take immense pride in presenting you with our unique boxed products, each featuring a distinct nut praline combined with the finest quality chocolate, meticulously crafted into delectable cubes of pure indulgence.</p>
-                    
-                    <p class="px-2">Within each praline cube lies a carefully concocted blend of your chosen nut, each selected for its exceptional taste and texture. From the classic hazelnut and almond to the exotic macadamia and pistachio, we have curated a diverse assortment that promises to delight even the most discerning palate.</p>
-                    
-                    <p class="px-2">Our master chocolatiers skillfully blend the roasted and finely ground nuts, expertly caramelized to perfection to achieve a harmonious balance of flavors. The result is a smooth and creamy praline that captures the essence of each nut, taking your taste buds on a journey through a myriad of nutty sensations.</p>
-                    
-                    <p class="px-2">To elevate these extraordinary praline creations, we have combined the nut praline with the highest quality chocolate. The rich, velvety chocolate envelopes the nutty center, providing a sumptuous contrast and adding a touch of luxury to every bite. Each praline cube is a work of art, carefully handcrafted to ensure impeccable quality and consistency. To preserve their excellence, we have thoughtfully boxed them in sets of 15, allowing you to indulge in a delightful variety or share these divine treats with your loved ones on special occasions.</p>
-                                </div>
-        </div>
+
             {% endif %}
         </div>
     </div>
@@ -80,7 +68,8 @@
                     <div class="col-6 text-end">
                 <span>
                 {% for tag in product.tags.all %}
-                <i class="mr-4 fa-lg fa-solid fa-tree" style="color: rgb(10, 167, 17)" data-toggle="tooltip" data-bs-placement="top" title="{{ tag }}"></i>
+                <i class="mr-4 fa-lg fa-solid fa-leaf" style="color: rgb(10, 167, 17)" data-toggle="tooltip" data-bs-placement="top" title="Organic"></i>
+                <!-- <i class="mr-4 fa-lg fa-solid fa-tree" style="color: rgb(10, 167, 17)" data-toggle="tooltip" data-bs-placement="top" title="{{ tag }}"></i> -->
                 {% endfor %}
             </span>
         </div>
@@ -185,6 +174,21 @@
             </div>
         </div>
         {% endfor %}
+        <div class="row bg-white m-2 p-3 border border-dark">
+            <div class="col-12">
+                
+                <p class="pt-4 px-2">Welcome to our exquisite praline range, a symphony of flavors that celebrates the natural richness and diversity of nuts. We take immense pride in presenting you with our unique boxed products, each featuring a distinct nut praline combined with the finest quality chocolate, meticulously crafted into delectable cubes of pure indulgence.</p>
+                    
+                    <p class="px-2">Within each praline cube lies a carefully concocted blend of your chosen nut, each selected for its exceptional taste and texture. From the classic hazelnut and almond to the exotic macadamia and pistachio, we have curated a diverse assortment that promises to delight even the most discerning palate.</p>
+                    
+                    <p class="px-2">Our master chocolatiers skillfully blend the roasted and finely ground nuts, expertly caramelized to perfection to achieve a harmonious balance of flavors. The result is a smooth and creamy praline that captures the essence of each nut, taking your taste buds on a journey through a myriad of nutty sensations.</p>
+                    
+                    <p class="px-2">To elevate these extraordinary praline creations, we have combined the nut praline with the highest quality chocolate. The rich, velvety chocolate envelopes the nutty center, providing a sumptuous contrast and adding a touch of luxury to every bite. Each praline cube is a work of art, carefully handcrafted to ensure impeccable quality and consistency. To preserve their excellence, we have thoughtfully boxed them in sets of 15, allowing you to indulge in a delightful variety or share these divine treats with your loved ones on special occasions.</p>
+                     <hr>           
+                    <img src="{{ MEDIA_URL }}pralines-page-img.png" class="border border-dark w-100 mt-3 praline-open img-fluid" alt="">
+                    <hr>
+                </div>
+        </div>
         <!-- Back to top button -->
         <div class="btt-button" data-toggle="tooltip" data-placement="top" title="Scroll To Top">
             <!-- Button targeted by custom javascript to jump to top of page -->
