@@ -8,8 +8,7 @@ Date: {{ order.date }}
 Order Number: {{ order.order_number }}
 
 order.lineitems.all
-order.lineitems
-order.product
+
 {% for item in order.lineitems.all %}
     {{ item.product.name }}
 Total: £{{ order.order_total }}
