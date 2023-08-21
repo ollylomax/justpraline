@@ -7,8 +7,6 @@ Your order has been received and the details are attached below:-
 Date: {{ order.date }}
 Order Number: {{ order.order_number }}
 
-order.lineitems.all
-
 {% for item in order.lineitems.all %}
     {{ item.product.name }}
 Total: £{{ order.order_total }}
