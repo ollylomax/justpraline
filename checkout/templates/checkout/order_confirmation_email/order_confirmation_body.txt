@@ -13,6 +13,11 @@ Amount Paid: £{{ order.grand_total }}
 
 Your order will be sent out the following day and be delivered to:-
 
+{% for item in order.lineitems.all %}
+    {{ item.product }}
+    {{ item.product.name }}
+{% endfor %}
+
 {{ order.full_name }}
 {{ order.address_line1 }}
 {{ order.address_line2 }}
