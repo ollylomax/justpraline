@@ -210,6 +210,15 @@ ENDPOINT_SECRET = os.getenv('ENDPOINT_SECRET', '')
 if 'DEVELOPMENT' in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     JP_EMAIL = 'info@justpraline.com'
+if 'USE_MAILERTOGO' in os.environ:
+    # MailerToGo env vars
+    MAILERTOGO_SMTP_HOST = ''
+    MAILERTOGO_SMTP_PORT = ''
+    MAILERTOGO_SMTP_USER = ''
+    MAILERTOGO_SMTP_PASSWORD = ''
+    MAILERTOGO_DOMAIN = ''
+    MAILERTOGO_SENDER_EMAIL = '@'.join(['noreply', MAILERTOGO_DOMAIN])
+    MAILERTOGO_SENDER_NAME = 'Just Praline'
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_USE_TLS = True
